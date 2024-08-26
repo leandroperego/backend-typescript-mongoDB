@@ -4,14 +4,10 @@ import 'dotenv/config';
 export async function conectar(): Promise<pg.Client> {
 
     const client = new pg.Client({
-        user: process.env.USER,
-        host: process.env.HOST,
-        database: process.env.DATABASE,
-        password: process.env.SENHA,
-        port: Number(process.env.PORT),
+        connectionString: process.env.DATABASE_URL
     });
 
-    try {
+    try{
         await client.connect();
         console.log('Conectado ao banco de dados!');
         return client;
@@ -35,5 +31,5 @@ export async function query(client: pg.Client, query: string, values: any = unde
         console.log("Erro ao executar a query: ", err);
         throw err;
     }
-
+        
 }
