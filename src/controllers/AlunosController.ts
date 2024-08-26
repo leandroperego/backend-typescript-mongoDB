@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { CriarAlunoDTO, ObterDadosUsuarioDTO } from '../DTO/UsuarioDTO';
+import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO, ObterIdUsuarioDTO } from '../DTO/UsuarioDTO';
 import AlunosRepository from '../repository/AlunosRepository';
 import { validationResult } from 'express-validator';
+import CustomRequest from './CustomRequest';
 
 class AlunosController {
 
@@ -46,6 +47,48 @@ class AlunosController {
 
     }
 
+    async update(req: CustomRequest, res: Response): Promise<void> {
+
+        const { id: id_rota } = req.params;
+        const { id: id_user }: ObterIdUsuarioDTO = req.user as ObterIdUsuarioDTO;
+
+        if (id_user !== Number(id_rota)) {
+            res.status(403).json({ 
+                type: 'error', 
+                mensagem: 'Não autorizado' 
+            });
+            return;
+        }
+        const aluno: AtualizarAlunoDTO = req.body;
+
+        const result = await AlunosRepository.findById(Number(id_user));
+
+        if (!result) {
+            res.status(404).json({
+                type: 'error',
+                message: 'Aluno não encontrado.'
+            });
+            return;
+        }
+
+        const resultUpdate = await AlunosRepository.update(Number(id_user), { ...result, ...aluno});
+
+        if (!resultUpdate) {
+            res.status(400).json({
+                type: 'error',
+                message: 'Erro ao atualizar aluno.'
+            });
+            return;
+        } else {
+            res.status(200).json({
+                type: 'success',
+                message: 'Aluno atualizado com sucesso.',
+                data: resultUpdate
+            });
+            return;
+        }
+
+    }
 }
 
 async function emailExist(email: string) {
