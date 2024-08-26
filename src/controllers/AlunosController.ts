@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
 import { CriarAlunoDTO, ObterDadosUsuarioDTO } from '../DTO/UsuarioDTO';
 import AlunosRepository from '../repository/AlunosRepository';
+import { validationResult } from 'express-validator';
 
 class AlunosController {
 
     async store(req: Request, res: Response): Promise<void> {
+
+        const errosValidacao = validationResult(req);
+
         const { nome, email, senha }: CriarAlunoDTO = req.body;
 
-        if (!nome || !email || !senha) {
+        if (!errosValidacao.isEmpty()) {
             res.status(400).json({
                 type: 'error',
-                message: 'Preencha todos os campos obrigatórios.'
+                error: errosValidacao.array()
             });
             return;
         }

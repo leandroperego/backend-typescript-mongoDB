@@ -5,20 +5,24 @@ import SessaoRepository from '../repository/SessaoRepository';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { CriarSessaoDTO } from '../DTO/SessaoDTO';
+import { validationResult } from 'express-validator';
 
 class SessaoController {
 
     async create(req: Request, res: Response): Promise<void> {
+
+        const errosValidacao = validationResult(req);
+
+        if (!errosValidacao.isEmpty()) {
+            res.status(400).json({
+                type: 'error',
+                errors: errosValidacao.array()
+            });
+            return;
+        }
+
         try{
             const { email, senha }: CriarSessaoDTO = req.body;
-
-            if (!email || !senha) {
-                res.status(400).json({
-                    type: 'error',
-                    message: 'E-mail e senha são obrigatórios'
-                });
-                return;
-            }
 
             const usuario: ObterDadosUsuarioDTO = await AlunosRepository.findByEmail(email).then((aluno) => aluno);
 
