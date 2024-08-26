@@ -7,6 +7,8 @@
     https://github.com/leandroperego/backend-app-cursos
 ```
 
+### Além da proposta abaixo, para a disciplina atual, foi adicionado um Método PUT para atualizar os dados de usuario. Rota "/usuarios/:idUsuario"
+
 
 # PROPOSTA
 Uma organização está desenvolvendo uma plataforma de cursos para fomentar a entrada no mercado de trabalho para diversas áreas. A plataforma de cursos deve permitir:
