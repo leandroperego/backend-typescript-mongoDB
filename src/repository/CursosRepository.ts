@@ -1,5 +1,6 @@
 import { conectar, desconectar, query } from "../config/database";
 import { ObterCancelamentosCursosDTO, ObterCursosDTO, ObterCursosInscricoesCancelamentosDTO, ObterInscricoesCursosDTO } from "../DTO/CursosDTO";
+import { Request } from 'express';
 
 
 const TABLE = "cursos";
@@ -81,19 +82,19 @@ class CursosRepository {
     return result && result.length > 0;
   }
 
-  async handleMatriculas(id_user: number, id_curso: number): Promise<number> {
+  async handleMatriculas(id_user: number, id_curso: number, req: Request): Promise<number> {
 
     const cliente = await conectar();
 
     let result = null;
 
-    if (await usuarioMatriculado(id_user, id_curso) && await usuarioJaCancelou(id_user, id_curso) === false) {
+    if (await usuarioMatriculado(id_user, id_curso) && await usuarioJaCancelou(id_user, id_curso) === false && req.method === 'DELETE') {
       await query(cliente,
         `INSERT INTO cancelamentos (id_aluno, id_curso) 
                   VALUES ($1, $2)`, [id_user, id_curso]);
       result = 0;
     } else {
-      if (await usuarioJaCancelou(id_user, id_curso) === false) {
+      if (await usuarioJaCancelou(id_user, id_curso) === false && req.method === 'POST') {
         await query(cliente,
           `INSERT INTO inscricoes (id_aluno, id_curso) 
                     VALUES ($1, $2)`, [id_user, id_curso]);

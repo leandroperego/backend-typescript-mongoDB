@@ -42,7 +42,7 @@ class CursosController {
         let result: number | null = null;
 
         try {
-            result = await CursosRepository.handleMatriculas(id_user, id_curso) as number;
+            result = await CursosRepository.handleMatriculas(id_user, id_curso, req) as number;
         } catch (error) {
             res.status(500).json({
                 type: 'error',
@@ -63,6 +63,7 @@ class CursosController {
             });
             return;
         } else if (result === 2) {
+            // TODO: Ao realizar o cancelar cursos 2 vezes, está enviando essa mensagem abaixo. Corrigir!
             res.status(401).json({
                 type: 'error',
                 mensagem: 'Inscrição não autorizada!'
