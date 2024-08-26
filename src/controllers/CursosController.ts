@@ -24,7 +24,6 @@ class CursosController {
     }
 
     async handleMatriculas(req: CustomRequest, res: Response): Promise<void> {
-        // const id = req.user?.id as string;
         const { id: id_user }: ObterIdUsuarioDTO = req.user as ObterIdUsuarioDTO;
         const { id } = req.params;
 

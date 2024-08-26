@@ -9,7 +9,7 @@ import CustomRequest from '../controllers/CustomRequest';
 import CursosRepository from '../repository/CursosRepository';
 
 const routes = (app: Express) => {
-    app.use('/autenticacao', SessaoRouter);
+    app.use('/', SessaoRouter);
     app.use('/usuarios', AlunosRouter);
     app.use('/cursos', CursosRouter);
     app.get('/:id', isAuth, checkIdIsNumeric, async (req: CustomRequest, res: Response) => {

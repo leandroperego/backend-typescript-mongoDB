@@ -7,5 +7,6 @@ const router = Router();
 
 router.get('/', CursosController.show);
 router.post('/:id', isAuth, CursosController.handleMatriculas);
+router.delete('/:id', isAuth, CursosController.handleMatriculas);
 
 export default router;
