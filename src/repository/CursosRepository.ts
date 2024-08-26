@@ -20,7 +20,7 @@ class CursosRepository {
     return result;
   }
 
-  async findAllWithoutRegistration(id_user: string): Promise<ObterCursosDTO[]> {
+  async findAllWithoutRegistration(id_user: number): Promise<ObterCursosDTO[]> {
 
     const cliente = await conectar();
 
@@ -34,7 +34,7 @@ class CursosRepository {
 
   }
 
-  async findAllRegistration(id_user: string): Promise<ObterCursosInscricoesCancelamentosDTO[]> {
+  async findAllRegistration(id_user: number): Promise<ObterCursosInscricoesCancelamentosDTO[]> {
     const cliente = await conectar();
 
     const result: ObterCursosInscricoesCancelamentosDTO[] = await query(cliente, `
@@ -69,7 +69,7 @@ class CursosRepository {
     return result;
   }
 
-  async findCursoById(id_curso: string): Promise<boolean> {
+  async findCursoById(id_curso: number): Promise<boolean> {
     const cliente = await conectar();
 
     const result: ObterCursosDTO[] = await query(cliente,
@@ -81,7 +81,7 @@ class CursosRepository {
     return result && result.length > 0;
   }
 
-  async handleMatriculas(id_user: string, id_curso: string): Promise<number> {
+  async handleMatriculas(id_user: number, id_curso: number): Promise<number> {
 
     const cliente = await conectar();
 
@@ -110,7 +110,7 @@ class CursosRepository {
   
 }
 
-async function usuarioMatriculado(id_user: string, id_curso: string): Promise<boolean> {
+async function usuarioMatriculado(id_user: number, id_curso: number): Promise<boolean> {
   const cliente = await conectar();
 
   const result: ObterInscricoesCursosDTO[] = await query(cliente,
@@ -122,7 +122,7 @@ async function usuarioMatriculado(id_user: string, id_curso: string): Promise<bo
   return result && result.length > 0;
 }
 
-async function usuarioJaCancelou(id_user: string, id_curso: string): Promise<boolean> {
+async function usuarioJaCancelou(id_user: number, id_curso: number): Promise<boolean> {
   const cliente = await conectar();
 
   const result: ObterCancelamentosCursosDTO[] = await query(cliente,

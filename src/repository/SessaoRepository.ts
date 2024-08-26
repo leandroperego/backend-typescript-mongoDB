@@ -5,7 +5,7 @@ import { ObterDadosLoginDTO } from "../DTO/SessaoDTO";
 const TABLE = "autenticacao";
 
 class SessaoRepository {
-    async findById(id: string): Promise<ObterDadosLoginDTO | null> {
+    async findById(id: number): Promise<ObterDadosLoginDTO | null> {
         const cliente = await conectar();
 
         try{

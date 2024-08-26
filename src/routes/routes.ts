@@ -17,7 +17,7 @@ const routes = (app: Express) => {
         const { id: id_user }: ObterIdUsuarioDTO = req.user as ObterIdUsuarioDTO;
         const { id: id_rota } = req.params;
 
-        if (id_user !== id_rota) {
+        if (id_user !== Number(id_rota)) {
             res.status(403).json({ 
                 type: 'error', 
                 mensagem: 'Não autorizado' 

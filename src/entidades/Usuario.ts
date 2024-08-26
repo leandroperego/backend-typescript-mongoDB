@@ -2,13 +2,14 @@
 
 class Usuario {
 
-    id: string;
+    id: number;
     nome: string;
     email: string;
     senha: string;
 
-    constructor(nome: string, email: string, senha: string) {
-        this.id = Math.random().toString(36).substring(2); //TODO: GERAR ID AUTOMATICAMENTE 
+    constructor(id: number, nome: string, email: string, senha: string) {
+
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
