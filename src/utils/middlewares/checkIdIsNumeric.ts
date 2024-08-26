@@ -1,3 +1,4 @@
+//TODO: TRANSFORMAR EM CLASSE PARA SEGUIR ORIENTACAO A OBJETO
 import { Request, Response, NextFunction } from "express";
 
 export default function checkIdIsNumeric(req: Request, res: Response, next: NextFunction) {

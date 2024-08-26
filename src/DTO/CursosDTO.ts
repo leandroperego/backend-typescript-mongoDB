@@ -8,6 +8,7 @@ export type ObterInscricoesCursosDTO = Required<Inscricoes>;
 
 export type ObterCancelamentosCursosDTO = Required<Cancelamentos>;
 
+// TODO: Remover a interface abaixo para outro arquivo
 export interface ObterCursosInscricoesCancelamentosDTO extends ObterCursosDTO {
     data_inscricao?: Date;
     data_cancelamento?: Date;

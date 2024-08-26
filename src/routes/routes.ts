@@ -3,16 +3,16 @@ import SessaoRouter from './SessaoRouter';
 import AlunosRouter from './AlunosRouter';
 import CursosRouter from './CursosRouter';
 import checkIdIsNumeric from '../utils/middlewares/checkIdIsNumeric';
-import isAuth from '../utils/middlewares/isAuth';
 import { ObterIdUsuarioDTO } from '../DTO/UsuarioDTO';
 import CustomRequest from '../controllers/CustomRequest';
 import CursosRepository from '../repository/CursosRepository';
+import Auth from '../utils/middlewares/AuthenticationMiddleware';
 
 const routes = (app: Express) => {
     app.use('/', SessaoRouter);
     app.use('/usuarios', AlunosRouter);
     app.use('/cursos', CursosRouter);
-    app.get('/:id', isAuth, checkIdIsNumeric, async (req: CustomRequest, res: Response) => {
+    app.get('/:id', Auth.isAuth, checkIdIsNumeric, async (req: CustomRequest, res: Response) => {
 
         const { id: id_user }: ObterIdUsuarioDTO = req.user as ObterIdUsuarioDTO;
         const { id: id_rota } = req.params;
