@@ -1,9 +1,9 @@
-import { ObterCursosDTO } from "../DTO/CursosDTO";
+import { ObterCursosDTO } from "../../infra/DTO/CursosDTO";
 import { Response } from "express";
 import CustomRequest from "./CustomRequest";
-import { ObterIdUsuarioDTO } from "../DTO/UsuarioDTO";
-import ICursosController from "../interfaces/ICursosController";
-import ICursosRepository from "../interfaces/ICursosRepository";
+import { ObterIdUsuarioDTO } from "../../infra/DTO/UsuarioDTO";
+import ICursosController from "../../dominio/interfaces/ICursosController";
+import ICursosRepository from "../../dominio/interfaces/ICursosRepository";
 
 class CursosController implements ICursosController {
 

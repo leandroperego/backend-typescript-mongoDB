@@ -1,4 +1,4 @@
-import Usuario from "../entidades/Usuario";
+import Usuario from "../../entidades/Usuario";
 
 export type ObterDadosLoginDTO = Pick<Usuario, "email" | "senha">;
 

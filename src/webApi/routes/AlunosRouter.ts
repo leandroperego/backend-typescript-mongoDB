@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import IAlunosController from '../interfaces/IAlunosController';
-import IAuthentication from '../interfaces/IAuthentication';
+import IAlunosController from '../../dominio/interfaces/IAlunosController';
+import IAuthentication from '../../dominio/interfaces/IAuthentication';
 
 class AlunosRouter {
 

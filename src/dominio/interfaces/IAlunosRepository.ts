@@ -1,5 +1,5 @@
-import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO } from "../DTO/UsuarioDTO";
-import Usuario from "../entidades/Usuario";
+import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO } from "../../infra/DTO/UsuarioDTO";
+import Usuario from "../../entidades/Usuario";
 
 interface IAlunosRepository {
     findByEmail(email: string): Promise<ObterDadosUsuarioDTO>;

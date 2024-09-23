@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { ObterDadosUsuarioDTO } from '../DTO/UsuarioDTO';
+import { ObterDadosUsuarioDTO } from '../../infra/DTO/UsuarioDTO';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { CriarSessaoDTO } from '../DTO/SessaoDTO';
+import { CriarSessaoDTO } from '../../infra/DTO/SessaoDTO';
 import { validationResult } from 'express-validator';
-import ISessaoController from '../interfaces/ISessaoController';
-import ISessaoRepository from '../interfaces/ISessaoRepository';
-import IAlunosRepository from '../interfaces/IAlunosRepository';
+import ISessaoController from '../../dominio/interfaces/ISessaoController';
+import ISessaoRepository from '../../dominio/interfaces/ISessaoRepository';
+import IAlunosRepository from '../../dominio/interfaces/IAlunosRepository';
 
 class SessaoController implements ISessaoController {
 

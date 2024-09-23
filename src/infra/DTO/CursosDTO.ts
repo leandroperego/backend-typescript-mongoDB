@@ -1,6 +1,6 @@
-import Cancelamentos from "../entidades/Cancelamentos";
-import Cursos from "../entidades/Cursos";
-import Inscricoes from "../entidades/Inscricoes";
+import Cancelamentos from "../../entidades/Cancelamentos";
+import Cursos from "../../entidades/Cursos";
+import Inscricoes from "../../entidades/Inscricoes";
 
 export type ObterCursosDTO = Required<Cursos>;
 

@@ -1,4 +1,4 @@
-import { ObterDadosLoginDTO } from "../DTO/SessaoDTO";
+import { ObterDadosLoginDTO } from "../../infra/DTO/SessaoDTO";
 
 interface ISessaoRepository {
     findById(id: number): Promise<ObterDadosLoginDTO | null>

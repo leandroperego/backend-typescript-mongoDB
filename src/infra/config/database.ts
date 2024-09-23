@@ -1,6 +1,6 @@
 import pg from 'pg';
 import 'dotenv/config';
-import IDatabase from '../interfaces/IDatabase';
+import IDatabase from '../../dominio/interfaces/IDatabase';
 
 class Database implements IDatabase {
 

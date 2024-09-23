@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { Response, NextFunction } from "express";
 import CustomRequest from "../../controllers/CustomRequest";
-import { ObterIdUsuarioDTO } from "../../DTO/UsuarioDTO";
-import IAuthentication from "../../interfaces/IAuthentication";
+import { ObterIdUsuarioDTO } from "../../../infra/DTO/UsuarioDTO";
+import IAuthentication from "../../../dominio/interfaces/IAuthentication";
 
 // function isAuth(req: CustomRequest, res: Response, next: NextFunction): void {
 //     const token: string = req.cookies['x-auth'];

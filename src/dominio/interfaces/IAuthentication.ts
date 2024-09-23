@@ -1,4 +1,4 @@
-import CustomRequest from "../controllers/CustomRequest";
+import CustomRequest from "../../webApi/controllers/CustomRequest";
 import { Response, NextFunction } from "express";
 
 interface IAuthentication {

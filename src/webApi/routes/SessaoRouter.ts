@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ISessaoController from '../interfaces/ISessaoController';
+import ISessaoController from '../../dominio/interfaces/ISessaoController';
 import { body } from 'express-validator';
 
 class SessaoRouter {

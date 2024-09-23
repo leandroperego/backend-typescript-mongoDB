@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import ICursosController from "../interfaces/ICursosController";
-import IAuthentication from "../interfaces/IAuthentication";
+import ICursosController from "../../dominio/interfaces/ICursosController";
+import IAuthentication from "../../dominio/interfaces/IAuthentication";
 import { param } from 'express-validator';
 
 class CursosRouter {

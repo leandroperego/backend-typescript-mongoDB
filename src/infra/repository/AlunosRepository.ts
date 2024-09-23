@@ -1,8 +1,8 @@
 import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO } from "../DTO/UsuarioDTO";
 import bcrypt from 'bcrypt';
-import Usuario from "../entidades/Usuario";
-import IDatabase from "../interfaces/IDatabase";
-import IAlunosRepository from "../interfaces/IAlunosRepository";
+import Usuario from "../../entidades/Usuario";
+import IDatabase from "../../dominio/interfaces/IDatabase";
+import IAlunosRepository from "../../dominio/interfaces/IAlunosRepository";
 
 class AlunosRepository implements IAlunosRepository {
 

@@ -1,8 +1,8 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
-import routes from './routes/routes';
-import Logger from './utils/middlewares/Logger';
+import routes from './webApi/routes/routes';
+import Logger from './webApi/utils/middlewares/Logger';
 
 const app = express();
 

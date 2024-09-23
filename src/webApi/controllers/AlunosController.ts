@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO, ObterIdUsuarioDTO } from '../DTO/UsuarioDTO';
+import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO, ObterIdUsuarioDTO } from '../../infra/DTO/UsuarioDTO';
 import { validationResult } from 'express-validator';
 import CustomRequest from './CustomRequest';
-import IAlunosController from '../interfaces/IAlunosController';
-import IAlunosRepository from '../interfaces/IAlunosRepository';
+import IAlunosController from '../../dominio/interfaces/IAlunosController';
+import IAlunosRepository from '../../dominio/interfaces/IAlunosRepository';
 
 class AlunosController implements IAlunosController {
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CustomRequest from "../controllers/CustomRequest";
+import CustomRequest from "../../webApi/controllers/CustomRequest";
 
 interface IAlunosController {
     store(req: Request, res: Response):Promise<void>;

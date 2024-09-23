@@ -1,6 +1,6 @@
 import { ObterDadosLoginDTO } from "../DTO/SessaoDTO";
-import IDatabase from "../interfaces/IDatabase";
-import ISessaoRepository from "../interfaces/ISessaoRepository";
+import IDatabase from "../../dominio/interfaces/IDatabase";
+import ISessaoRepository from "../../dominio/interfaces/ISessaoRepository";
 
 class SessaoRepository implements ISessaoRepository {
 

@@ -1,7 +1,7 @@
 import { ObterCancelamentosCursosDTO, ObterCursosDTO, ObterCursosInscricoesCancelamentosDTO, ObterInscricoesCursosDTO } from "../DTO/CursosDTO";
 import { Request } from 'express';
-import ICursosRepository from "../interfaces/ICursosRepository";
-import IDatabase from "../interfaces/IDatabase";
+import ICursosRepository from "../../dominio/interfaces/ICursosRepository";
+import IDatabase from "../../dominio/interfaces/IDatabase";
 
 class CursosRepository implements ICursosRepository {
 

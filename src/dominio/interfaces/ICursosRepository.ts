@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { ObterCursosDTO, ObterCursosInscricoesCancelamentosDTO } from '../DTO/CursosDTO';
+import { ObterCursosDTO, ObterCursosInscricoesCancelamentosDTO } from '../../infra/DTO/CursosDTO';
 
 interface IAlunosRepository {
     findAll(iniciados: boolean): Promise<ObterCursosDTO[]>
