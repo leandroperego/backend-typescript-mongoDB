@@ -1,3 +1,0 @@
-Foram feitas as interfaces IAuthentication e ICursosController
-
-    Mudar o handleMatriculas para CursosServices
