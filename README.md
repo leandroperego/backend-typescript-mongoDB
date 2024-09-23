@@ -1,13 +1,15 @@
 # Sistema Backend apresentado como projeto da disciplina Backend com Typescript
 
-## Aproveitando do projeto da disciplina Backend com Node e SQL, foi convertido o código para uso de Typescript.
+## Continuando o projeto da disciplina Backend com Typescript , foi dado continuidade no código para aplicar conhecimentos adquiridos nesse bloco.
 
-## Link do projeto com Javascript
+## Link do projeto anterior
 ```
-    https://github.com/leandroperego/backend-app-cursos
+    https://github.com/leandroperego/backend-app-cursos-typescript
 ```
 
-### Além da proposta abaixo, para a disciplina atual, foi adicionado um Método PUT para atualizar os dados de usuario. Rota "/usuarios/:idUsuario"
+### Nessa proposta, foram aplicadas alguns principios de arquitetura de software, principios SOLID, mudança do banco de dados para MongoDB e algumas outras melhorias no código.
+
+### Além da proposta abaixo, foi adicionado um Método PUT para atualizar os dados de usuario. Rota "/usuarios/:idUsuario"
 
 
 # PROPOSTA
