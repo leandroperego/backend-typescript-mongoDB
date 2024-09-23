@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { Response, NextFunction } from "express";
 import CustomRequest from "../../controllers/CustomRequest";
 import { ObterIdUsuarioDTO } from "../../DTO/UsuarioDTO";
+import IAuthentication from "../../interfaces/IAuthentication";
 
 // function isAuth(req: CustomRequest, res: Response, next: NextFunction): void {
 //     const token: string = req.cookies['x-auth'];
@@ -44,9 +45,9 @@ import { ObterIdUsuarioDTO } from "../../DTO/UsuarioDTO";
 
 // SEGUINDO ORIENTACAO A OBJETOS:
 
-class AuthenticationMiddleware {
+class AuthenticationMiddleware implements IAuthentication {
 
-    static isAuth(req: CustomRequest, res: Response, next: NextFunction): void {
+    isAuth(req: CustomRequest, res: Response, next: NextFunction): void {
         const token: string = req.cookies['x-auth'];
 
         if (!token) {
@@ -81,6 +82,7 @@ class AuthenticationMiddleware {
             }
         }
     }
+
 }
 
 export default AuthenticationMiddleware;

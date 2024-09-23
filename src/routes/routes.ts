@@ -5,14 +5,32 @@ import CursosRouter from './CursosRouter';
 import { ObterIdUsuarioDTO } from '../DTO/UsuarioDTO';
 import CustomRequest from '../controllers/CustomRequest';
 import CursosRepository from '../repository/CursosRepository';
-import Auth from '../utils/middlewares/AuthenticationMiddleware';
-import { param, validationResult } from 'express-validator';
+import { validationResult } from 'express-validator';
+import CursosController from '../controllers/CursosController';
+import AuthenticationMiddleware from '../utils/middlewares/AuthenticationMiddleware';
+import AlunosController from '../controllers/AlunosController';
+import SessaoController from '../controllers/SessaoController';
+import AlunosRepository from '../repository/AlunosRepository';
+import database from '../config/database';
+import SessaoRepository from '../repository/SessaoRepository';
+
+const alunosRepository = new AlunosRepository(database);
+const cursosRepository = new CursosRepository(database);
+const sessaoRepository = new SessaoRepository(database);
+
+const auth = new AuthenticationMiddleware();
+const cursosController = new CursosController(cursosRepository);
+const alunosController = new AlunosController(alunosRepository);
+const sessaoController = new SessaoController(sessaoRepository,alunosRepository);
+const cursosRouters = new CursosRouter(cursosController, auth);
+const alunosRouters = new AlunosRouter(alunosController,auth);
+const sessaoRouters = new SessaoRouter(sessaoController);
 
 const routes = (app: Express) => {
-    app.use('/', SessaoRouter);
-    app.use('/usuarios', AlunosRouter);
-    app.use('/cursos', CursosRouter);
-    app.get('/:id', Auth.isAuth, async (req: CustomRequest, res: Response) => {
+    app.use('/', sessaoRouters.routes());
+    app.use('/usuarios', alunosRouters.routes());
+    app.use('/cursos', cursosRouters.routes());
+    app.get('/:id', auth.isAuth, async (req: CustomRequest, res: Response) => {
 
         const errosValidacao = validationResult(req);
 
@@ -34,7 +52,7 @@ const routes = (app: Express) => {
             });
             return;
         }
-       const cursos = await CursosRepository.findAllRegistration(id_user);
+       const cursos = await cursosRepository.findAllRegistration(id_user);
 
         res.status(200).json(cursos);
     });

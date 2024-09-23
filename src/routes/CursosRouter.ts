@@ -1,17 +1,25 @@
 import { Router } from 'express';
-
-import CursosController from '../controllers/CursosController';
-import Auth from '../utils/middlewares/AuthenticationMiddleware';
+import ICursosController from "../interfaces/ICursosController";
+import IAuthentication from "../interfaces/IAuthentication";
 import { param } from 'express-validator';
 
-const router = Router();
+class CursosRouter {
+        constructor(
+                private cursosController: ICursosController,
+                private authentication: IAuthentication
+        ) { }
 
-router.get('/', CursosController.show);
-router.use([
-        param('id').exists().isNumeric().withMessage('Id obrigatório'),
-        Auth.isAuth
-]);
-router.post('/:id', CursosController.handleMatriculas);
-router.delete('/:id', CursosController.handleMatriculas);
+        public routes(): Router {
+                const router = Router();
+                router.get('/', this.cursosController.show);
+                router.use([
+                        param('id').exists().isNumeric().withMessage('Id obrigatório'),
+                        this.authentication.isAuth
+                ]);
+                router.post('/:id', this.cursosController.handleMatriculas);
+                router.delete('/:id', this.cursosController.handleMatriculas);
+                return router;
+        }
+}
 
-export default router;
+export default CursosRouter;

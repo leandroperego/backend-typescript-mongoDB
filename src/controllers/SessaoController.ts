@@ -1,13 +1,19 @@
 import { Request, Response } from 'express';
 import { ObterDadosUsuarioDTO } from '../DTO/UsuarioDTO';
-import AlunosRepository from '../repository/AlunosRepository';
-import SessaoRepository from '../repository/SessaoRepository';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { CriarSessaoDTO } from '../DTO/SessaoDTO';
 import { validationResult } from 'express-validator';
+import ISessaoController from '../interfaces/ISessaoController';
+import ISessaoRepository from '../interfaces/ISessaoRepository';
+import IAlunosRepository from '../interfaces/IAlunosRepository';
 
-class SessaoController {
+class SessaoController implements ISessaoController {
+
+    constructor(
+        private sessaoRepository: ISessaoRepository,
+        private alunosRepository: IAlunosRepository
+    ) { }
 
     async create(req: Request, res: Response): Promise<void> {
 
@@ -24,7 +30,7 @@ class SessaoController {
         try{
             const { email, senha }: CriarSessaoDTO = req.body;
 
-            const usuario: ObterDadosUsuarioDTO = await AlunosRepository.findByEmail(email).then((aluno) => aluno);
+            const usuario: ObterDadosUsuarioDTO = await this.alunosRepository.findByEmail(email).then((aluno) => aluno);
 
             if (!usuario) {
                 res.status(400).json({
@@ -34,7 +40,7 @@ class SessaoController {
                 return;
             }
 
-            const dadosLogin = await SessaoRepository.findById(usuario.id);
+            const dadosLogin = await this.sessaoRepository.findById(usuario.id);
 
             if (!dadosLogin) {
                 throw new Error("Dados de login não encontrados");
@@ -84,4 +90,4 @@ class SessaoController {
     }
 }
 
-export default new SessaoController();
+export default SessaoController;

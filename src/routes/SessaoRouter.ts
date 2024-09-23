@@ -1,16 +1,27 @@
 import { Router } from 'express';
-
-import SessaoController from '../controllers/SessaoController';
+import ISessaoController from '../interfaces/ISessaoController';
 import { body } from 'express-validator';
 
-const router = Router();
+class SessaoRouter {
 
-router.post('/login', 
-    [
-        body('email').exists().isEmail().withMessage('Email obrigatório'),
-        body('senha').exists().withMessage('Senha obrigatória')
-    ]
-, SessaoController.create);
-router.post('/logout', SessaoController.delete);
+    constructor(
+        private sessaoController: ISessaoController
+    ) { }
 
-export default router;
+    public routes(): Router {
+
+        const router = Router();
+
+        router.post('/login',
+            [
+                body('email').exists().isEmail().withMessage('Email obrigatório'),
+                body('senha').exists().withMessage('Senha obrigatória')
+            ], this.sessaoController.create);
+
+        router.post('/logout', this.sessaoController.delete);
+
+        return router;
+    }
+}
+
+export default SessaoRouter;

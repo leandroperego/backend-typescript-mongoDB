@@ -1,18 +1,30 @@
 import { Router } from 'express';
-import AlunosController from '../controllers/AlunosController';
-import { body, param } from 'express-validator';
-import Auth from '../utils/middlewares/AuthenticationMiddleware';
+import { body } from 'express-validator';
+import IAlunosController from '../interfaces/IAlunosController';
+import IAuthentication from '../interfaces/IAuthentication';
 
-const router = Router();
+class AlunosRouter {
 
-router.post('/',
-    [
-        body('nome').exists().withMessage('Nome obrigatório'),
-        body('email').exists().isEmail().withMessage('Email obrigatório'),
-        body('senha').exists().withMessage('Senha obrigatória')
-    ]
-    ,AlunosController.store);
+    constructor(
+        private alunosController: IAlunosController,
+        private authentication: IAuthentication
+    ) {}
 
-router.put('/:id', Auth.isAuth ,AlunosController.update);
+    routes(): Router {
+        const router = Router();
 
-export default router;
+        router.post('/',
+            [
+                body('nome').exists().withMessage('Nome obrigatório'),
+                body('email').exists().isEmail().withMessage('Email obrigatório'),
+                body('senha').exists().withMessage('Senha obrigatória')
+            ]
+            ,this.alunosController.store);
+
+        router.put('/:id', this.authentication.isAuth ,this.alunosController.update);
+
+        return router;
+    }
+}
+
+export default AlunosRouter;

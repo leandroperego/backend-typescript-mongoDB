@@ -1,15 +1,20 @@
 import { ObterCursosDTO } from "../DTO/CursosDTO";
-import CursosRepository from "../repository/CursosRepository";
 import { Response } from "express";
 import CustomRequest from "./CustomRequest";
 import { ObterIdUsuarioDTO } from "../DTO/UsuarioDTO";
+import ICursosController from "../interfaces/ICursosController";
+import ICursosRepository from "../interfaces/ICursosRepository";
 
-class CursosController {
+class CursosController implements ICursosController {
+
+    constructor(
+        private cursosRepository: ICursosRepository
+    ) { }
 
     async show(req: CustomRequest, res: Response): Promise<void> {
 
         if (!req.user) {
-            const cursos: ObterCursosDTO[] = await CursosRepository.findAll(false);
+            const cursos: ObterCursosDTO[] = await this.cursosRepository.findAll(false);
             res.status(200).json(cursos);
             return;
         }
@@ -18,7 +23,7 @@ class CursosController {
 
         // filtros de busca TODO
 
-        const cursos: ObterCursosDTO[] = await CursosRepository.findAllWithoutRegistration(id);
+        const cursos: ObterCursosDTO[] = await this.cursosRepository.findAllWithoutRegistration(id);
 
         res.status(200).json(cursos);
     }
@@ -29,7 +34,7 @@ class CursosController {
 
         const id_curso = Number(id);
 
-        const cursoExiste: boolean = await CursosRepository.findCursoById(id_curso);
+        const cursoExiste: boolean = await this.cursosRepository.findCursoById(id_curso);
 
         if (!cursoExiste) {
             res.status(404).json({
@@ -42,7 +47,7 @@ class CursosController {
         let result: number | null = null;
 
         try {
-            result = await CursosRepository.handleMatriculas(id_user, id_curso, req) as number;
+            result = await this.cursosRepository.handleMatriculas(id_user, id_curso, req) as number;
         } catch (error) {
             res.status(500).json({
                 type: 'error',
@@ -74,4 +79,4 @@ class CursosController {
 }
 
 
-export default new CursosController();
+export default CursosController;

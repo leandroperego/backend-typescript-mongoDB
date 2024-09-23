@@ -1,28 +1,33 @@
-import { conectar, desconectar, query } from "../config/database";
 import { ObterDadosLoginDTO } from "../DTO/SessaoDTO";
+import IDatabase from "../interfaces/IDatabase";
+import ISessaoRepository from "../interfaces/ISessaoRepository";
 
+class SessaoRepository implements ISessaoRepository {
 
-const TABLE = "autenticacao";
+    private TABLE = "autenticacao";
 
-class SessaoRepository {
+    constructor(
+        private database: IDatabase
+    ) { }
+
     async findById(id: number): Promise<ObterDadosLoginDTO | null> {
-        const cliente = await conectar();
+        const cliente = await this.database.conectar();
 
-        try{
-            const sql = `SELECT * FROM ${TABLE} WHERE id_usuario = $1`;
+        try {
+            const sql = `SELECT * FROM ${this.TABLE} WHERE id_usuario = $1`;
             const valores = [id];
-    
-            const result = await query(cliente, sql, valores);
+
+            const result = await this.database.query(cliente, sql, valores);
             return result && result[0];
 
-        } catch (error){
+        } catch (error) {
             console.log('erro ao buscar dados de sessao do id informado.');
             return null;
-        } finally{
-            desconectar(cliente);
+        } finally {
+            this.database.desconectar(cliente);
         }
-        
+
     }
 }
 
-export default new SessaoRepository();
+export default SessaoRepository;

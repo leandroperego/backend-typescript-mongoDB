@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
 import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO, ObterIdUsuarioDTO } from '../DTO/UsuarioDTO';
-import AlunosRepository from '../repository/AlunosRepository';
 import { validationResult } from 'express-validator';
 import CustomRequest from './CustomRequest';
+import IAlunosController from '../interfaces/IAlunosController';
+import IAlunosRepository from '../interfaces/IAlunosRepository';
 
-class AlunosController {
+class AlunosController implements IAlunosController {
+
+    constructor(
+        private alunosRepository: IAlunosRepository
+    ) { }
 
     async store(req: Request, res: Response): Promise<void> {
 
@@ -20,7 +25,7 @@ class AlunosController {
             return;
         }
 
-        if (await emailExist(email)) {
+        if (await this.emailExist(email)) {
             res.status(400).json({
                 type: 'error',
                 message: 'Não é possivel cadastrar esse e-mail. Email já está em uso.'
@@ -28,7 +33,7 @@ class AlunosController {
             return;
         }
 
-        const result = await AlunosRepository.create({ nome, email, senha });
+        const result = await this.alunosRepository.create({ nome, email, senha });
 
         if (!result) {
             res.status(400).json({
@@ -61,7 +66,7 @@ class AlunosController {
         }
         const aluno: AtualizarAlunoDTO = req.body;
 
-        const result = await AlunosRepository.findById(Number(id_user));
+        const result = await this.alunosRepository.findById(Number(id_user));
 
         if (!result) {
             res.status(404).json({
@@ -71,7 +76,7 @@ class AlunosController {
             return;
         }
 
-        const resultUpdate = await AlunosRepository.update(Number(id_user), { ...result, ...aluno});
+        const resultUpdate = await this.alunosRepository.update(Number(id_user), { ...result, ...aluno});
 
         if (!resultUpdate) {
             res.status(400).json({
@@ -89,12 +94,12 @@ class AlunosController {
         }
 
     }
+
+    private async emailExist(email: string) {
+        const result: ObterDadosUsuarioDTO = await this.alunosRepository.findByEmail(email);
+        return result;
+    }
 }
 
-async function emailExist(email: string) {
-    const result: ObterDadosUsuarioDTO = await AlunosRepository.findByEmail(email);
-    return result;
-}
 
-
-export default new AlunosController();
+export default AlunosController;
