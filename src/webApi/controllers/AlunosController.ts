@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO, ObterIdUsuarioDTO } from '../../infra/DTO/UsuarioDTO';
+import { AtualizarAlunoDTO, CriarAlunoDTO, ObterIdUsuarioDTO } from '../../infra/DTO/UsuarioDTO';
 import { validationResult } from 'express-validator';
-import CustomRequest from './CustomRequest';
+import CustomRequest from '../../dominio/interfaces/CustomRequest';
 import IAlunosController from '../../dominio/interfaces/IAlunosController';
-import IAlunosRepository from '../../dominio/interfaces/IAlunosRepository';
+import IAlunosServices from '../../dominio/interfaces/IAlunosServices';
 
 class AlunosController implements IAlunosController {
 
     constructor(
-        private alunosRepository: IAlunosRepository
+        private alunosServices: IAlunosServices
     ) { }
 
     async store(req: Request, res: Response): Promise<void> {
@@ -25,30 +25,13 @@ class AlunosController implements IAlunosController {
             return;
         }
 
-        if (await this.emailExist(email)) {
-            res.status(400).json({
-                type: 'error',
-                message: 'Não é possivel cadastrar esse e-mail. Email já está em uso.'
-            });
-            return;
-        }
+        const result = await this.alunosServices.create({ nome, email, senha });
 
-        const result = await this.alunosRepository.create({ nome, email, senha });
-
-        if (!result) {
-            res.status(400).json({
-                type: 'error',
-                message: 'Erro ao criar aluno.'
-            });
-            return;
-        } else {
-            res.status(201).json({
-                type: 'success',
-                message: 'Aluno criado com sucesso.',
-                data: result
-            });
-            return;
-        }
+        res.status(201).json({
+            type: 'success',
+            message: 'Aluno criado com sucesso.',
+            data: result
+        });
 
     }
 
@@ -58,48 +41,22 @@ class AlunosController implements IAlunosController {
         const { id: id_user }: ObterIdUsuarioDTO = req.user as ObterIdUsuarioDTO;
 
         if (id_user !== Number(id_rota)) {
-            res.status(403).json({ 
-                type: 'error', 
-                mensagem: 'Não autorizado' 
+            res.status(403).json({
+                type: 'error',
+                mensagem: 'Não autorizado'
             });
             return;
         }
         const aluno: AtualizarAlunoDTO = req.body;
 
-        const result = await this.alunosRepository.findById(Number(id_user));
+        const resultUpdate = await this.alunosServices.update(Number(id_user), aluno);
 
-        if (!result) {
-            res.status(404).json({
-                type: 'error',
-                message: 'Aluno não encontrado.'
-            });
-            return;
-        }
-
-        const resultUpdate = await this.alunosRepository.update(Number(id_user), { ...result, ...aluno});
-
-        if (!resultUpdate) {
-            res.status(400).json({
-                type: 'error',
-                message: 'Erro ao atualizar aluno.'
-            });
-            return;
-        } else {
-            res.status(200).json({
-                type: 'success',
-                message: 'Aluno atualizado com sucesso.',
-                data: resultUpdate
-            });
-            return;
-        }
-
-    }
-
-    private async emailExist(email: string) {
-        const result: ObterDadosUsuarioDTO = await this.alunosRepository.findByEmail(email);
-        return result;
+        res.status(200).json({
+            type: 'success',
+            message: 'Aluno atualizado com sucesso.',
+            data: resultUpdate
+        });
     }
 }
-
 
 export default AlunosController;

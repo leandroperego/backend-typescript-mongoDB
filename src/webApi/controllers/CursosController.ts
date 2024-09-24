@@ -1,29 +1,19 @@
 import { ObterCursosDTO } from "../../infra/DTO/CursosDTO";
 import { Response } from "express";
-import CustomRequest from "./CustomRequest";
+import CustomRequest from "../../dominio/interfaces/CustomRequest";
 import { ObterIdUsuarioDTO } from "../../infra/DTO/UsuarioDTO";
 import ICursosController from "../../dominio/interfaces/ICursosController";
-import ICursosRepository from "../../dominio/interfaces/ICursosRepository";
+import ICursosServices from "../../dominio/interfaces/ICursosServices";
 
 class CursosController implements ICursosController {
 
     constructor(
-        private cursosRepository: ICursosRepository
+        private cursosServices: ICursosServices
     ) { }
 
     async show(req: CustomRequest, res: Response): Promise<void> {
 
-        if (!req.user) {
-            const cursos: ObterCursosDTO[] = await this.cursosRepository.findAll(false);
-            res.status(200).json(cursos);
-            return;
-        }
-        
-        const { id } = req.user;
-
-        // filtros de busca TODO
-
-        const cursos: ObterCursosDTO[] = await this.cursosRepository.findAllWithoutRegistration(id);
+        const cursos: ObterCursosDTO[] = await this.cursosServices.findAll(req.user);
 
         res.status(200).json(cursos);
     }
@@ -34,26 +24,8 @@ class CursosController implements ICursosController {
 
         const id_curso = Number(id);
 
-        const cursoExiste: boolean = await this.cursosRepository.findCursoById(id_curso);
 
-        if (!cursoExiste) {
-            res.status(404).json({
-                type: 'error',
-                mensagem: 'Curso não encontrado.'
-            });
-            return;
-        }
-
-        let result: number | null = null;
-
-        try {
-            result = await this.cursosRepository.handleMatriculas(id_user, id_curso, req) as number;
-        } catch (error) {
-            res.status(500).json({
-                type: 'error',
-                mensagem: 'Erro na matricula.'
-            });
-        }
+        const result: number = await this.cursosServices.handleMatriculas(id_user, id_curso, req) as number;
 
         if (result === 1) {
             res.status(201).json({

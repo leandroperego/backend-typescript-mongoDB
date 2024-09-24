@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Response, NextFunction } from "express";
-import CustomRequest from "../../controllers/CustomRequest";
+import CustomRequest from "../../../dominio/interfaces/CustomRequest";
 import { ObterIdUsuarioDTO } from "../../../infra/DTO/UsuarioDTO";
 import IAuthentication from "../../../dominio/interfaces/IAuthentication";
 
