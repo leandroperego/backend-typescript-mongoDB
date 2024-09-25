@@ -15,8 +15,6 @@ class AlunosController implements IAlunosController {
 
         const errosValidacao = validationResult(req);
 
-        const { nome, email, senha }: CriarAlunoDTO = req.body;
-
         if (!errosValidacao.isEmpty()) {
             res.status(400).json({
                 type: 'error',
@@ -24,6 +22,8 @@ class AlunosController implements IAlunosController {
             });
             return;
         }
+
+        const { nome, email, senha }: CriarAlunoDTO = req.body;
 
         const result = await this.alunosServices.create({ nome, email, senha });
 
