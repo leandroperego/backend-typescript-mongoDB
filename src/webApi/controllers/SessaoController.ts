@@ -3,11 +3,13 @@ import { CriarSessaoDTO } from '../../infra/DTO/SessaoDTO';
 import { validationResult } from 'express-validator';
 import ISessaoController from '../../dominio/interfaces/ISessaoController';
 import ISessaoServices from '../../dominio/interfaces/ISessaoServices';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 class SessaoController implements ISessaoController {
 
     constructor(
-        private sessaoServices: ISessaoServices,
+        @inject('ISessaoServices') private sessaoServices: ISessaoServices,
     ) { }
 
     async create(req: Request, res: Response): Promise<void> {

@@ -3,6 +3,7 @@ import { Response, NextFunction } from "express";
 import CustomRequest from "../../../dominio/interfaces/CustomRequest";
 import { ObterIdUsuarioDTO } from "../../../infra/DTO/UsuarioDTO";
 import IAuthentication from "../../../dominio/interfaces/IAuthentication";
+import { injectable } from "inversify";
 
 // function isAuth(req: CustomRequest, res: Response, next: NextFunction): void {
 //     const token: string = req.cookies['x-auth'];
@@ -45,6 +46,7 @@ import IAuthentication from "../../../dominio/interfaces/IAuthentication";
 
 // SEGUINDO ORIENTACAO A OBJETOS:
 
+@injectable()
 class AuthenticationMiddleware implements IAuthentication {
 
     isAuth(req: CustomRequest, res: Response, next: NextFunction): void {

@@ -2,13 +2,15 @@ import { ObterCancelamentosCursosDTO, ObterCursosDTO, ObterCursosInscricoesCance
 import { Request } from 'express';
 import ICursosRepository from "../../dominio/interfaces/ICursosRepository";
 import IDatabase from "../../dominio/interfaces/IDatabase";
+import { inject, injectable } from "inversify";
 
+@injectable()
 class CursosRepository implements ICursosRepository {
 
   private TABLE = "cursos";
 
   constructor(
-    private database: IDatabase
+    @inject('IDatabase') private database: IDatabase
   ) { }
 
   async findAll(iniciados = true): Promise<ObterCursosDTO[]> {
@@ -116,29 +118,29 @@ class CursosRepository implements ICursosRepository {
 
   private async usuarioMatriculado(id_user: number, id_curso: number): Promise<boolean> {
     const cliente = await this.database.conectar();
-  
+
     const result: ObterInscricoesCursosDTO[] = await this.database.query(cliente,
       `SELECT * FROM inscricoes 
               WHERE id_aluno = $1 AND id_curso = $2`, [id_user, id_curso]);
-  
+
     await this.database.desconectar(cliente);
-  
+
     return result && result.length > 0;
   }
 
   private async usuarioJaCancelou(id_user: number, id_curso: number): Promise<boolean> {
     const cliente = await this.database.conectar();
-  
+
     const result: ObterCancelamentosCursosDTO[] = await this.database.query(cliente,
       `SELECT * FROM cancelamentos 
               WHERE id_aluno = $1 AND id_curso = $2`, [id_user, id_curso]);
-  
+
     await this.database.desconectar(cliente);
-  
+
     return result && result.length > 0;
   }
 
-  
+
 }
 
 export default CursosRepository;

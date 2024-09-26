@@ -4,39 +4,25 @@ import AlunosRouter from './AlunosRouter';
 import CursosRouter from './CursosRouter';
 import { ObterIdUsuarioDTO } from '../../infra/DTO/UsuarioDTO';
 import CustomRequest from '../../dominio/interfaces/CustomRequest';
-import CursosRepository from '../../infra/repository/CursosRepository';
 import { validationResult } from 'express-validator';
-import CursosController from '../controllers/CursosController';
-import AuthenticationMiddleware from '../utils/middlewares/AuthenticationMiddleware';
-import AlunosController from '../controllers/AlunosController';
-import SessaoController from '../controllers/SessaoController';
-import AlunosRepository from '../../infra/repository/AlunosRepository';
-import database from '../../infra/config/database';
-import SessaoRepository from '../../infra/repository/SessaoRepository';
-import AlunosServices from '../../dominio/servicos/AlunosServices';
-import CursosServices from '../../dominio/servicos/CursosServices';
-import SessaoServices from '../../dominio/servicos/SessaoServices';
+import container from '../../infra/inversify.config';
+import ICursosRepository from '../../dominio/interfaces/ICursosRepository';
+import ICursosController from '../../dominio/interfaces/ICursosController';
+import IAlunosController from '../../dominio/interfaces/IAlunosController';
+import ISessaoController from '../../dominio/interfaces/ISessaoController';
+import IAuthentication from '../../dominio/interfaces/IAuthentication';
 
-// TODO: Usar Inversify
+const cursosRepository = container.get<ICursosRepository>('ICursosRepository');
 
-const alunosRepository = new AlunosRepository(database);
-const cursosRepository = new CursosRepository(database);
-const sessaoRepository = new SessaoRepository(database);
-
-const alunosServices = new AlunosServices(alunosRepository);
-const cursosServices = new CursosServices(cursosRepository);
-const sessaoServices = new SessaoServices(alunosServices, sessaoRepository);
-
-const auth = new AuthenticationMiddleware();
-const cursosController = new CursosController(cursosServices);
-const alunosController = new AlunosController(alunosRepository);
-const sessaoController = new SessaoController(sessaoServices);
+const auth = container.get<IAuthentication>('IAuthentication');
+const cursosController = container.get<ICursosController>('ICursosController');
+const alunosController = container.get<IAlunosController>('IAlunosController');
+const sessaoController = container.get<ISessaoController>('ISessaoController');
 const cursosRouters = new CursosRouter(cursosController, auth);
 const alunosRouters = new AlunosRouter(alunosController, auth);
 const sessaoRouters = new SessaoRouter(sessaoController);
 
 class Routes {
-
     public static init(app: Express) {
         app.use('/', sessaoRouters.routes());
         app.use('/usuarios', alunosRouters.routes());

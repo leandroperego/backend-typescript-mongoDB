@@ -1,13 +1,15 @@
+import { inject, injectable } from "inversify";
 import { ObterCursosDTO } from "../../infra/DTO/CursosDTO";
 import { ObterIdUsuarioDTO } from "../../infra/DTO/UsuarioDTO";
 import CustomRequest from "../interfaces/CustomRequest";
 import ICursosRepository from "../interfaces/ICursosRepository";
 import ICursosServices from "../interfaces/ICursosServices";
 
+@injectable()
 class CursosServices implements ICursosServices {
 
     constructor(
-        private readonly cursosRepository: ICursosRepository
+        @inject('ICursosRepository') private readonly cursosRepository: ICursosRepository
     ) { }
 
     async findAll(user: ObterIdUsuarioDTO | undefined): Promise<ObterCursosDTO[]> {

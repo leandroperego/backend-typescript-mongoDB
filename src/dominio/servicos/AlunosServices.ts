@@ -2,11 +2,12 @@ import Usuario from "../../entidades/Usuario";
 import { ObterDadosUsuarioDTO, CriarAlunoDTO, AtualizarAlunoDTO } from "../../infra/DTO/UsuarioDTO";
 import IAlunosServices from "../interfaces/IAlunosServices";
 import IAlunosRepository from "../interfaces/IAlunosRepository";
-
+import { inject, injectable } from "inversify";
+@injectable()
 class AlunosServices implements IAlunosServices {
 
     constructor(
-        private alunosRepository: IAlunosRepository
+        @inject('IAlunosRepository') private alunosRepository: IAlunosRepository
     ) { }
     
     async create(aluno: CriarAlunoDTO): Promise<CriarAlunoDTO | null> {

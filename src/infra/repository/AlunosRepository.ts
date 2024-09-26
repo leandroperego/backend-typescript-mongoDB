@@ -3,13 +3,15 @@ import bcrypt from 'bcrypt';
 import Usuario from "../../entidades/Usuario";
 import IDatabase from "../../dominio/interfaces/IDatabase";
 import IAlunosRepository from "../../dominio/interfaces/IAlunosRepository";
+import { inject, injectable } from "inversify";
 
+@injectable()
 class AlunosRepository implements IAlunosRepository {
 
   private TABLE = "usuario";
 
   constructor(
-    private database: IDatabase
+    @inject('IDatabase') private database: IDatabase
   ) { }
 
   async findByEmail(email: string): Promise<ObterDadosUsuarioDTO> {

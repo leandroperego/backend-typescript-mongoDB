@@ -4,11 +4,13 @@ import { validationResult } from 'express-validator';
 import CustomRequest from '../../dominio/interfaces/CustomRequest';
 import IAlunosController from '../../dominio/interfaces/IAlunosController';
 import IAlunosServices from '../../dominio/interfaces/IAlunosServices';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 class AlunosController implements IAlunosController {
 
     constructor(
-        private alunosServices: IAlunosServices
+        @inject('IAlunosServices') private alunosServices: IAlunosServices
     ) { }
 
     async store(req: Request, res: Response): Promise<void> {

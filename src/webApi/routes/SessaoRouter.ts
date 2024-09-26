@@ -16,9 +16,9 @@ class SessaoRouter {
             [
                 body('email').exists().isEmail().withMessage('Email obrigatório'),
                 body('senha').exists().withMessage('Senha obrigatória')
-            ], this.sessaoController.create);
+            ], this.sessaoController.create.bind(this.sessaoController));
 
-        router.post('/logout', this.sessaoController.delete);
+        router.post('/logout', this.sessaoController.delete.bind(this.sessaoController));
 
         return router;
     }

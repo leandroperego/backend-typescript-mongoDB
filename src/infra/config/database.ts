@@ -1,7 +1,9 @@
 import pg from 'pg';
 import 'dotenv/config';
 import IDatabase from '../../dominio/interfaces/IDatabase';
+import { injectable } from 'inversify';
 
+@injectable()
 class Database implements IDatabase {
 
     async conectar(): Promise<pg.Client> {
@@ -34,4 +36,4 @@ class Database implements IDatabase {
 
 }
 
-export default new Database();
+export default Database;

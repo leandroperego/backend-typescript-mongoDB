@@ -4,11 +4,13 @@ import CustomRequest from "../../dominio/interfaces/CustomRequest";
 import { ObterIdUsuarioDTO } from "../../infra/DTO/UsuarioDTO";
 import ICursosController from "../../dominio/interfaces/ICursosController";
 import ICursosServices from "../../dominio/interfaces/ICursosServices";
+import { inject, injectable } from "inversify";
 
+@injectable()
 class CursosController implements ICursosController {
 
     constructor(
-        private cursosServices: ICursosServices
+        @inject('ICursosServices') private cursosServices: ICursosServices
     ) { }
 
     async show(req: CustomRequest, res: Response): Promise<void> {

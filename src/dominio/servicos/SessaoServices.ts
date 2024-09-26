@@ -1,3 +1,4 @@
+import { inject, injectable } from "inversify";
 import { ObterDadosUsuarioDTO } from "../../infra/DTO/UsuarioDTO";
 import IAlunosServices from "../interfaces/IAlunosServices";
 import ISessaoRepository from "../interfaces/ISessaoRepository";
@@ -5,11 +6,12 @@ import ISessaoServices from "../interfaces/ISessaoServices";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+@injectable()
 class SessaoServices implements ISessaoServices {
 
     constructor(
-        private alunosServices: IAlunosServices,
-        private sessaoRepository: ISessaoRepository
+        @inject('IAlunosServices') private alunosServices: IAlunosServices,
+        @inject('ISessaoRepository') private sessaoRepository: ISessaoRepository
     ) { }
 
     async create(email: string, senha: string): Promise<string> {

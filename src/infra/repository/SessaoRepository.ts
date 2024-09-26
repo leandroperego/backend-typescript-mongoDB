@@ -1,13 +1,15 @@
 import { ObterDadosLoginDTO } from "../DTO/SessaoDTO";
 import IDatabase from "../../dominio/interfaces/IDatabase";
 import ISessaoRepository from "../../dominio/interfaces/ISessaoRepository";
+import { inject, injectable } from "inversify";
 
+@injectable()
 class SessaoRepository implements ISessaoRepository {
 
     private TABLE = "autenticacao";
 
     constructor(
-        private database: IDatabase
+        @inject('IDatabase') private database: IDatabase
     ) { }
 
     async findById(id: number): Promise<ObterDadosLoginDTO | null> {
