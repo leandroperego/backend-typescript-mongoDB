@@ -7,20 +7,14 @@ import CustomRequest from '../../dominio/interfaces/CustomRequest';
 import { validationResult } from 'express-validator';
 import container from '../../infra/inversify.config';
 import ICursosRepository from '../../dominio/interfaces/ICursosRepository';
-import ICursosController from '../../dominio/interfaces/ICursosController';
-import IAlunosController from '../../dominio/interfaces/IAlunosController';
-import ISessaoController from '../../dominio/interfaces/ISessaoController';
 import IAuthentication from '../../dominio/interfaces/IAuthentication';
+import IRouters from '../../dominio/interfaces/IRouters';
 
 const cursosRepository = container.get<ICursosRepository>('ICursosRepository');
-
 const auth = container.get<IAuthentication>('IAuthentication');
-const cursosController = container.get<ICursosController>('ICursosController');
-const alunosController = container.get<IAlunosController>('IAlunosController');
-const sessaoController = container.get<ISessaoController>('ISessaoController');
-const cursosRouters = new CursosRouter(cursosController, auth);
-const alunosRouters = new AlunosRouter(alunosController, auth);
-const sessaoRouters = new SessaoRouter(sessaoController);
+const cursosRouters = container.get<IRouters>('CursosRouters');
+const alunosRouters = container.get<IRouters>('AlunosRouters');
+const sessaoRouters = container.get<IRouters>('SessaoRouters');
 
 class Routes {
     public static init(app: Express) {

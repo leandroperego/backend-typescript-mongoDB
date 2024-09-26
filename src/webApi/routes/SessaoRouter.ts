@@ -1,11 +1,14 @@
 import { Router } from 'express';
 import ISessaoController from '../../dominio/interfaces/ISessaoController';
 import { body } from 'express-validator';
+import { inject, injectable } from 'inversify';
+import IRouters from '../../dominio/interfaces/IRouters';
 
-class SessaoRouter {
+@injectable()
+class SessaoRouter implements IRouters {
 
     constructor(
-        private sessaoController: ISessaoController
+        @inject('ISessaoController') private sessaoController: ISessaoController
     ) { }
 
     public routes(): Router {

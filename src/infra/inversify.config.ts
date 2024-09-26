@@ -21,6 +21,10 @@ import ISessaoServices from "../dominio/interfaces/ISessaoServices";
 import SessaoServices from "../dominio/servicos/SessaoServices";
 import ISessaoRepository from "../dominio/interfaces/ISessaoRepository";
 import SessaoRepository from "./repository/SessaoRepository";
+import IRouters from "../dominio/interfaces/IRouters";
+import SessaoRouter from "../webApi/routes/SessaoRouter";
+import AlunosRouter from "../webApi/routes/AlunosRouter";
+import CursosRouter from "../webApi/routes/CursosRouter";
 
 let container = new Container();
 
@@ -67,6 +71,18 @@ container
 container
     .bind<ICursosController>('ICursosController')
     .to(CursosController)
+    .inRequestScope();
+container
+    .bind<IRouters>('SessaoRouters')
+    .to(SessaoRouter)
+    .inRequestScope();
+container
+    .bind<IRouters>('AlunosRouters')
+    .to(AlunosRouter)
+    .inRequestScope();
+container
+    .bind<IRouters>('CursosRouters')
+    .to(CursosRouter)
     .inRequestScope();
 
 

@@ -2,12 +2,14 @@ import { Router } from 'express';
 import { body } from 'express-validator';
 import IAlunosController from '../../dominio/interfaces/IAlunosController';
 import IAuthentication from '../../dominio/interfaces/IAuthentication';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 class AlunosRouter {
 
     constructor(
-        private alunosController: IAlunosController,
-        private authentication: IAuthentication
+        @inject('IAlunosController') private alunosController: IAlunosController,
+        @inject('IAuthentication') private authentication: IAuthentication
     ) {}
 
     routes(): Router {

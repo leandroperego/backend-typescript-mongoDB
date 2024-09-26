@@ -2,11 +2,13 @@ import { Router } from 'express';
 import ICursosController from "../../dominio/interfaces/ICursosController";
 import IAuthentication from "../../dominio/interfaces/IAuthentication";
 import { param } from 'express-validator';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 class CursosRouter {
         constructor(
-                private cursosController: ICursosController,
-                private authentication: IAuthentication
+                @inject('ICursosController') private cursosController: ICursosController,
+                @inject('IAuthentication') private authentication: IAuthentication
         ) { }
 
         public routes(): Router {
