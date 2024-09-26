@@ -12,7 +12,7 @@ class SessaoController implements ISessaoController {
         @inject('ISessaoServices') private sessaoServices: ISessaoServices,
     ) { }
 
-    async create(req: Request, res: Response): Promise<void> {
+     create = async (req: Request, res: Response): Promise<void> => {
 
         const errosValidacao = validationResult(req);
 
@@ -36,7 +36,7 @@ class SessaoController implements ISessaoController {
 
     }
 
-    async delete(req: Request, res: Response): Promise<void> {
+    delete = async (req: Request, res: Response): Promise<void> => {
         res.clearCookie('x-auth');
         res.status(200).json({ message: 'Logout success' });
         return;

@@ -14,7 +14,7 @@ class SessaoServices implements ISessaoServices {
         @inject('ISessaoRepository') private sessaoRepository: ISessaoRepository
     ) { }
 
-    async create(email: string, senha: string): Promise<string> {
+     create = async(email: string, senha: string): Promise<string> => {
         let token: string = '';
 
         try {

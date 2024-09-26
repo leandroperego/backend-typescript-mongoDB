@@ -13,7 +13,7 @@ class AlunosController implements IAlunosController {
         @inject('IAlunosServices') private alunosServices: IAlunosServices
     ) { }
 
-    async store(req: Request, res: Response): Promise<void> {
+     store = async(req: Request, res: Response): Promise<void> => {
 
         const errosValidacao = validationResult(req);
 
@@ -37,7 +37,7 @@ class AlunosController implements IAlunosController {
 
     }
 
-    async update(req: CustomRequest, res: Response): Promise<void> {
+     update = async(req: CustomRequest, res: Response): Promise<void> => {
 
         const { id: id_rota } = req.params;
         const { id: id_user }: ObterIdUsuarioDTO = req.user as ObterIdUsuarioDTO;

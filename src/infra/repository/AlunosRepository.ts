@@ -14,7 +14,7 @@ class AlunosRepository implements IAlunosRepository {
     @inject('IDatabase') private database: IDatabase
   ) { }
 
-  async findByEmail(email: string): Promise<ObterDadosUsuarioDTO> {
+   findByEmail = async(email: string): Promise<ObterDadosUsuarioDTO> => {
 
     const cliente = await this.database.conectar();
 
@@ -25,7 +25,7 @@ class AlunosRepository implements IAlunosRepository {
     return result && result[0];
   }
 
-  async findById(id: number): Promise<ObterDadosUsuarioDTO> {
+   findById = async(id: number): Promise<ObterDadosUsuarioDTO> => {
 
     const cliente = await this.database.conectar();
 
@@ -36,7 +36,7 @@ class AlunosRepository implements IAlunosRepository {
     return result && result[0];
   }
 
-  async create(aluno: CriarAlunoDTO): Promise<CriarAlunoDTO | null> {
+   create = async(aluno: CriarAlunoDTO): Promise<CriarAlunoDTO | null> => {
     const senhaHash = bcrypt.hashSync(aluno.senha, 10);
 
     const cliente = await this.database.conectar();
@@ -64,7 +64,7 @@ class AlunosRepository implements IAlunosRepository {
 
   }
 
-  async update(id: number, aluno: AtualizarAlunoDTO): Promise<Usuario | null> {
+   update = async(id: number, aluno: AtualizarAlunoDTO): Promise<Usuario | null> => {
 
     const cliente = await this.database.conectar();
 

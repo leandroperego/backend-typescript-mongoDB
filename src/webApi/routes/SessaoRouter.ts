@@ -19,9 +19,9 @@ class SessaoRouter implements IRouters {
             [
                 body('email').exists().isEmail().withMessage('Email obrigatório'),
                 body('senha').exists().withMessage('Senha obrigatória')
-            ], this.sessaoController.create.bind(this.sessaoController));
+            ], this.sessaoController.create);
 
-        router.post('/logout', this.sessaoController.delete.bind(this.sessaoController));
+        router.post('/logout', this.sessaoController.delete);
 
         return router;
     }

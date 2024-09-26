@@ -12,7 +12,7 @@ class CursosServices implements ICursosServices {
         @inject('ICursosRepository') private readonly cursosRepository: ICursosRepository
     ) { }
 
-    async findAll(user: ObterIdUsuarioDTO | undefined): Promise<ObterCursosDTO[]> {
+     findAll = async(user: ObterIdUsuarioDTO | undefined): Promise<ObterCursosDTO[]> => {
 
         let cursos: ObterCursosDTO[] = [];
 
@@ -25,7 +25,7 @@ class CursosServices implements ICursosServices {
         return cursos;
     }
 
-    async handleMatriculas(userId: number, cursoId: number, req: CustomRequest): Promise<number> {
+     handleMatriculas = async(userId: number, cursoId: number, req: CustomRequest): Promise<number> => {
         const cursoExiste: boolean = await this.cursosRepository.findCursoById(cursoId);
 
         if (!cursoExiste) {

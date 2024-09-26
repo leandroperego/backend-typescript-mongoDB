@@ -12,7 +12,7 @@ class SessaoRepository implements ISessaoRepository {
         @inject('IDatabase') private database: IDatabase
     ) { }
 
-    async findById(id: number): Promise<ObterDadosLoginDTO | null> {
+     findById = async(id: number): Promise<ObterDadosLoginDTO | null> => {
         const cliente = await this.database.conectar();
 
         try {

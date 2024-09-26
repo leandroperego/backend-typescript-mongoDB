@@ -13,7 +13,7 @@ class CursosRepository implements ICursosRepository {
     @inject('IDatabase') private database: IDatabase
   ) { }
 
-  async findAll(iniciados = true): Promise<ObterCursosDTO[]> {
+   findAll = async(iniciados = true): Promise<ObterCursosDTO[]> => {
 
     const cliente = await this.database.conectar();
 
@@ -29,7 +29,7 @@ class CursosRepository implements ICursosRepository {
     return result;
   }
 
-  async findAllWithoutRegistration(id_user: number): Promise<ObterCursosDTO[]> {
+   findAllWithoutRegistration = async(id_user: number): Promise<ObterCursosDTO[]> => {
 
     const cliente = await this.database.conectar();
 
@@ -43,7 +43,7 @@ class CursosRepository implements ICursosRepository {
 
   }
 
-  async findAllRegistration(id_user: number): Promise<ObterCursosInscricoesCancelamentosDTO[]> {
+   findAllRegistration = async(id_user: number): Promise<ObterCursosInscricoesCancelamentosDTO[]> => {
     const cliente = await this.database.conectar();
 
     const result: ObterCursosInscricoesCancelamentosDTO[] = await this.database.query(cliente, `
@@ -78,7 +78,7 @@ class CursosRepository implements ICursosRepository {
     return result;
   }
 
-  async findCursoById(id_curso: number): Promise<boolean> {
+   findCursoById = async(id_curso: number): Promise<boolean> => {
     const cliente = await this.database.conectar();
 
     const result: ObterCursosDTO[] = await this.database.query(cliente,
@@ -90,7 +90,7 @@ class CursosRepository implements ICursosRepository {
     return result && result.length > 0;
   }
 
-  async handleMatriculas(id_user: number, id_curso: number, req: Request): Promise<number> {
+   handleMatriculas = async(id_user: number, id_curso: number, req: Request): Promise<number> => {
 
     const cliente = await this.database.conectar();
 
@@ -116,7 +116,7 @@ class CursosRepository implements ICursosRepository {
     return result;
   }
 
-  private async usuarioMatriculado(id_user: number, id_curso: number): Promise<boolean> {
+  private  usuarioMatriculado = async(id_user: number, id_curso: number): Promise<boolean> => {
     const cliente = await this.database.conectar();
 
     const result: ObterInscricoesCursosDTO[] = await this.database.query(cliente,
@@ -128,7 +128,7 @@ class CursosRepository implements ICursosRepository {
     return result && result.length > 0;
   }
 
-  private async usuarioJaCancelou(id_user: number, id_curso: number): Promise<boolean> {
+  private  usuarioJaCancelou = async(id_user: number, id_curso: number): Promise<boolean> => {
     const cliente = await this.database.conectar();
 
     const result: ObterCancelamentosCursosDTO[] = await this.database.query(cliente,

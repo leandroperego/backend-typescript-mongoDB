@@ -1,7 +1,4 @@
 import { Request, Response, Express } from 'express';
-import SessaoRouter from './SessaoRouter';
-import AlunosRouter from './AlunosRouter';
-import CursosRouter from './CursosRouter';
 import { ObterIdUsuarioDTO } from '../../infra/DTO/UsuarioDTO';
 import CustomRequest from '../../dominio/interfaces/CustomRequest';
 import { validationResult } from 'express-validator';

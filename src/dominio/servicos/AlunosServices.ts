@@ -10,7 +10,7 @@ class AlunosServices implements IAlunosServices {
         @inject('IAlunosRepository') private alunosRepository: IAlunosRepository
     ) { }
     
-    async create(aluno: CriarAlunoDTO): Promise<CriarAlunoDTO | null> {
+     create = async(aluno: CriarAlunoDTO): Promise<CriarAlunoDTO | null> => {
 
         if (await this.emailExist(aluno.email)) {
             throw new Error("Não é possivel cadastrar esse e-mail. Email já está em uso.");
@@ -25,7 +25,7 @@ class AlunosServices implements IAlunosServices {
         return result;
     }
 
-    async update(id: number, aluno: AtualizarAlunoDTO): Promise<Usuario | null> {
+     update = async(id: number, aluno: AtualizarAlunoDTO): Promise<Usuario | null> => {
         const result = await this.findById(Number(id));
 
         if (!result) {
@@ -42,7 +42,7 @@ class AlunosServices implements IAlunosServices {
 
     }
 
-    async findById(id: number): Promise<ObterDadosUsuarioDTO | null> {
+     findById = async(id: number): Promise<ObterDadosUsuarioDTO | null> => {
         const result = await this.alunosRepository.findById(Number(id));
         if (!result) {
             return null;
@@ -50,7 +50,7 @@ class AlunosServices implements IAlunosServices {
         return result;
     }
 
-    async findByEmail(email: string): Promise<ObterDadosUsuarioDTO | null> {
+     findByEmail = async(email: string): Promise<ObterDadosUsuarioDTO | null> => {
         const result = await this.alunosRepository.findByEmail(email);
 
         if (!result) {
@@ -60,7 +60,7 @@ class AlunosServices implements IAlunosServices {
         return result;
     }
 
-    private async emailExist(email: string): Promise<boolean> {
+    private  emailExist = async(email: string): Promise<boolean> => {
         const result: ObterDadosUsuarioDTO | null = await this.findByEmail(email);
         
         return result ? true : false;

@@ -13,14 +13,14 @@ class CursosController implements ICursosController {
         @inject('ICursosServices') private cursosServices: ICursosServices
     ) { }
 
-    async show(req: CustomRequest, res: Response): Promise<void> {
+    show = async (req: CustomRequest, res: Response): Promise<void> => {
 
         const cursos: ObterCursosDTO[] = await this.cursosServices.findAll(req.user);
 
         res.status(200).json(cursos);
     }
 
-    async handleMatriculas(req: CustomRequest, res: Response): Promise<void> {
+    handleMatriculas = async (req: CustomRequest, res: Response): Promise<void> => {
         const { id: id_user } = req.user as ObterIdUsuarioDTO;
         const { id } = req.params;
 
