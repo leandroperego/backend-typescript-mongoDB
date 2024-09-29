@@ -2,31 +2,38 @@ import { ObterDadosLoginDTO } from "../DTO/SessaoDTO";
 import IDatabase from "../../dominio/interfaces/IDatabase";
 import ISessaoRepository from "../../dominio/interfaces/ISessaoRepository";
 import { inject, injectable } from "inversify";
+import { Collection, Db, MongoClient } from "mongodb";
+import AutenticaoSchema from "./DBSchemas/AutenticacaoSchema";
 
 @injectable()
 class SessaoRepository implements ISessaoRepository {
 
-    private TABLE = "autenticacao";
+    private COLLECTION_NAME = "autenticacao";
 
     constructor(
         @inject('IDatabase') private database: IDatabase
     ) { }
 
+    private async getDBProps(): Promise<{ dbAcess: Db, collection: Collection<AutenticaoSchema>, client: MongoClient }> {
+        const client = await this.database.conectar();
+        const dbAcess = client.db(process.env.DATABASE_NAME);
+        const collection = dbAcess.collection<AutenticaoSchema>(this.COLLECTION_NAME);
+        return { dbAcess, collection, client };
+    }
+
      findById = async(id: number): Promise<ObterDadosLoginDTO | null> => {
-        const cliente = await this.database.conectar();
+        const { client, collection } = await this.getDBProps();
 
         try {
-            const sql = `SELECT * FROM ${this.TABLE} WHERE id_usuario = $1`;
-            const valores = [id];
+            const result = await collection.findOne({ id: id }, { projection: { _id: 0, email: 1, senha: 1 } });
 
-            const result = await this.database.query(cliente, sql, valores);
-            return result && result[0];
+            return result as ObterDadosLoginDTO | null;
 
         } catch (error) {
             console.log('erro ao buscar dados de sessao do id informado.');
             return null;
         } finally {
-            this.database.desconectar(cliente);
+            this.database.desconectar(client);
         }
 
     }

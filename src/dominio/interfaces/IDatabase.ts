@@ -1,9 +1,9 @@
+import { Collection, MongoClient } from "mongodb";
 
-
-interface IDatabase<Client= any, Result = any> {
-    conectar(): Promise<Client>;
-    desconectar(client: Client): Promise<void>;
-    query(client: Client,query: string, values?: any[]): Promise<Result>;
+interface IDatabase {
+    conectar(): Promise<MongoClient>;
+    desconectar(client: MongoClient): Promise<void>;
+    getCollection(client: MongoClient, collection: string): Promise<Collection>;
 }
 
 export default IDatabase;

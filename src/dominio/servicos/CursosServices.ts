@@ -26,7 +26,7 @@ class CursosServices implements ICursosServices {
     }
 
      handleMatriculas = async(userId: number, cursoId: number, req: CustomRequest): Promise<number> => {
-        const cursoExiste: boolean = await this.cursosRepository.findCursoById(cursoId);
+        const cursoExiste: boolean = await this.cursosRepository.cursoByIdExists(cursoId);
 
         if (!cursoExiste) {
             throw new Error('Curso não encontrado.');

@@ -1,14 +1,23 @@
-import pg from 'pg';
 import 'dotenv/config';
 import IDatabase from '../../dominio/interfaces/IDatabase';
 import { injectable } from 'inversify';
+import { Collection, MongoClient, ServerApiVersion } from 'mongodb';
 
 @injectable()
 class Database implements IDatabase {
 
-    async conectar(): Promise<pg.Client> {
-        const client = new pg.Client({
-            connectionString: process.env.DATABASE_URL
+    async conectar(): Promise<MongoClient> {
+
+        if (!process.env.DATABASE_URL) {
+            throw new Error('Database URL not found');
+        }
+
+        const client = new MongoClient(process.env.DATABASE_URL, {
+            serverApi: {
+                version: ServerApiVersion.v1,
+                strict: true,
+                deprecationErrors: true
+            }
         });
 
         try {
@@ -20,18 +29,14 @@ class Database implements IDatabase {
             throw err;
         }
     }
-    async desconectar(client: pg.Client): Promise<void> {
-        await client.end();
+    async desconectar(client: MongoClient): Promise<void> {
+        await client.close();
         console.log('Desconectado do banco de dados!');
     }
-    async query(client: pg.Client, query: string, values?: any[]): Promise<any[]> {
-        try {
-            const result = await client.query(query, values);
-            return result.rows;
-        } catch (err: any) {
-            console.log("Erro ao executar a query: ", err);
-            throw err;
-        }
+
+    async getCollection(client: MongoClient, collection: string): Promise<Collection> {
+
+        return await client.db(process.env.DATABASE_NAME).collection(collection);
     }
 
 }
