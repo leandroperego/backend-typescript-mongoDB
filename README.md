@@ -9,13 +9,12 @@
 
 ### Nessa proposta, foram aplicadas alguns principios de arquitetura de software, principios SOLID, mudança do banco de dados para MongoDB e algumas outras melhorias no código.
 
-### Além da proposta abaixo, foi adicionado um Método PUT para atualizar os dados de usuario. Rota "/usuarios/:idUsuario"
-
 
 # PROPOSTA
 Uma organização está desenvolvendo uma plataforma de cursos para fomentar a entrada no mercado de trabalho para diversas áreas. A plataforma de cursos deve permitir:
 
     - Cadastro de alunos;
+    - Atualizar cadastro de alunos;
     - Login de alunos cadastrados;
     - Ver cursos disponíveis;
     - Um aluno cadastrado pode:
@@ -25,8 +24,8 @@ Uma organização está desenvolvendo uma plataforma de cursos para fomentar a e
 
 Dos requisitos não funcionais, estão:
 
-    - A solução deve ser desenvolvida em JavaScript + Node.js;
-    - O banco de dados deve ser relacional e é da sua responsabilidade a configuração dele;
+    - A solução deve ser desenvolvida em Typescript;
+    - O banco de dados deve ser NoSQL e é da sua responsabilidade a configuração dele;
     - O Front-end deve enviar as informações formatadas em JSON e deve receber também no formato JSON as respostas esperadas;
     - O projeto deve ter um package.json com script para start, para iniciar a aplicação.
 
@@ -35,6 +34,7 @@ Dos requisitos não funcionais, estão:
 | Funcionalidade                           	| Objetivo                                                                        	| Observações                                                                                                                                                            	|   	|   	|
 |------------------------------------------	|---------------------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|---	|---	|
 | Cadastro do aluno                        	| Permitir qualquer pessoa que tenha interesse em participar faça seu cadastro    	| Precisam ser solicitados pelo menos o nome, email e idade do aluno. O mesmo email não pode ser usado por dois alunos;                                                  	|   	|   	|
+| Alterar cadastro de aluno                	| Permitir ao usuário alterar dados de cadastro com nome e email                   	|                                                                                                                                                                       	|   	|   	|
 | Realizar login                           	| Permitir ao usuário realizar o login com seu usuário e senha                    	|                                                                                                                                                                        	|   	|   	|
 | Listar cursos disponíveis para inscrição 	| Permitir que qualquer pessoa que acesse a plataforma veja os cursos disponíveis 	| A ação de inscrição só pode estar visível para usuários logados; Apresentar somente cursos que ainda não foram iniciados; Apresentar informação com inscritos no curso 	|   	|   	|
 | Realizar inscrição                       	| Permitir o usuário logado realizar inscrição em um curso                        	| Um aluno só pode estar inscrito uma vez em cada curso                                                                                                                  	|   	|   	|
@@ -46,7 +46,9 @@ Dos requisitos não funcionais, estão:
 | Ação                    	| Rota             	| Envio                                                                                                      	| Retorno esperado                                                                                                                                                                                                                                                                                                                                                                         	|
 |-------------------------	|------------------	|------------------------------------------------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
 | Criar conta             	| /usuarios        	| { “nome”: “nome do aluno”, “email”:”email do aluno”, “senha”:”senha do aluno”, “nascimento”:”dd/mm/aaaa” } 	| Se der certo, status code 200: qualquer resposta Se der errado, status code 400: { “mensagem”: “motivo da falha” }                                                                                                                                                                                                                                                                       	|
+| Alterar conta            	| /usuarios/:id    	| { “nome”: “nome do aluno”, “email”:”email do aluno”                                                        	| Se der certo, status code 200: qualquer resposta Se der errado, status code 400: { “mensagem”: “motivo da falha” }                                                                                                                                                                                                                                                                       	|
 | Login                   	| /login           	| { “email”:”email do aluno”, “senha”:”senha do aluno” }                                                     	| Se der certo, status code 200 + JWT configurado nos cookies Se der errado, status code 400: { “mensagem”: “motivo da falha” }                                                                                                                                                                                                                                                            	|
+| Logout                   	| /logout          	|                                                                                                            	| Sempre retornar status code 200                                                                                                                                                                                                                                                                                                                                                       	|
 | Listar cursos           	| /cursos          	| (opcional) { “filtro”: “string de busca” }                                                                 	| Sempre retornar status code 200 com um array de cursos (vazio no caso de não ter resultados): [{ “id”: “id do curso”, “nome”:”nome do curso”, “descrição”: “descrição do curso”, “capa”:”url da imagem de capa”, “inscricoes”: 0, “inicio”: “dd/mm/aaaa”, “inscrito”: false }]                                                                                                           	|
 | Fazer inscrição         	| /cursos/:idCurso 	| (usar JWT para identificar o usuário)                                                                      	| Retornar status code 403 se não tiver logado Retornar status code 404 se não existir o curso Retornar status code 200 se a inscrição for bem sucedida Retornar status code 400 se der errado com: { “mensagem”: “motivo da falha” }                                                                                                                                                      	|
 | Cancelar inscrição      	| /cursos/:idCurso 	| (usar JWT para identificar o usuário)                                                                      	| Retornar status code 403 se não tiver logado Retornar status code 404 se não existir Retornar status code 200 se o cancelamento for bem sucedido Retornar status code 400 se der errado com: { “mensagem”: “motivo da falha” }                                                                                                                                                           	|
