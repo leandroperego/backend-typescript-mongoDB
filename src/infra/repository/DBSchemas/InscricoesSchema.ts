@@ -2,9 +2,9 @@ import { ObjectId } from "mongodb";
 
 type InscricoesSchema = {
     _id: ObjectId;
-    id: number;
-    id_aluno: number;
-    id_curso: number;
+    id: string;
+    id_aluno: string;
+    id_curso: string;
     data_inscricao: Date;
 }
 

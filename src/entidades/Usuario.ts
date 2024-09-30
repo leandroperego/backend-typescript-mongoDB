@@ -1,12 +1,12 @@
 
 class Usuario {
 
-    id: number;
+    id: string;
     nome: string;
     email: string;
     senha: string; //TODO: Inserir dados de login em outra classe
 
-    constructor(id: number, nome: string, email: string, senha: string) {
+    constructor(id: string, nome: string, email: string, senha: string) {
 
         this.id = id;
         this.nome = nome;

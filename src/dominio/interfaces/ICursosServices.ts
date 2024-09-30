@@ -4,7 +4,7 @@ import CustomRequest from "./CustomRequest";
 
 interface ICursosServices {
     findAll(user: ObterIdUsuarioDTO | undefined): Promise<ObterCursosDTO[]>;
-    handleMatriculas(userId: number, cursoId: number, req: CustomRequest): Promise<number>
+    handleMatriculas(userId: string, cursoId: string, req: CustomRequest): Promise<number>
 }
 
 export default ICursosServices;

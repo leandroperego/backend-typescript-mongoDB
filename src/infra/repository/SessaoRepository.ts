@@ -16,16 +16,16 @@ class SessaoRepository implements ISessaoRepository {
 
     private async getDBProps(): Promise<{ dbAcess: Db, collection: Collection<AutenticaoSchema>, client: MongoClient }> {
         const client = await this.database.conectar();
-        const dbAcess = client.db(process.env.DATABASE_NAME);
+        const dbAcess = client.db(process.env.DB_NAME);
         const collection = dbAcess.collection<AutenticaoSchema>(this.COLLECTION_NAME);
         return { dbAcess, collection, client };
     }
 
-     findById = async(id: number): Promise<ObterDadosLoginDTO | null> => {
+     findByUserId = async(id: string): Promise<ObterDadosLoginDTO | null> => {
         const { client, collection } = await this.getDBProps();
 
         try {
-            const result = await collection.findOne({ id: id }, { projection: { _id: 0, email: 1, senha: 1 } });
+            const result = await collection.findOne({ id_usuario: id }, { projection: { _id: 0, email: 1, senha: 1 } });
 
             return result as ObterDadosLoginDTO | null;
 

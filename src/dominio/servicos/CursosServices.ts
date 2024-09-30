@@ -25,7 +25,7 @@ class CursosServices implements ICursosServices {
         return cursos;
     }
 
-     handleMatriculas = async(userId: number, cursoId: number, req: CustomRequest): Promise<number> => {
+     handleMatriculas = async(userId: string, cursoId: string, req: CustomRequest): Promise<number> => {
         const cursoExiste: boolean = await this.cursosRepository.cursoByIdExists(cursoId);
 
         if (!cursoExiste) {

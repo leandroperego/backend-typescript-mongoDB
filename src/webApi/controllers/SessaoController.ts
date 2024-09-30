@@ -4,6 +4,7 @@ import { validationResult } from 'express-validator';
 import ISessaoController from '../../dominio/interfaces/ISessaoController';
 import ISessaoServices from '../../dominio/interfaces/ISessaoServices';
 import { inject, injectable } from 'inversify';
+import CustomRequest from '../../dominio/interfaces/CustomRequest';
 
 @injectable()
 class SessaoController implements ISessaoController {
@@ -12,7 +13,7 @@ class SessaoController implements ISessaoController {
         @inject('ISessaoServices') private sessaoServices: ISessaoServices,
     ) { }
 
-     create = async (req: Request, res: Response): Promise<void> => {
+     create = async (req: CustomRequest, res: Response): Promise<void> => {
 
         const errosValidacao = validationResult(req);
 

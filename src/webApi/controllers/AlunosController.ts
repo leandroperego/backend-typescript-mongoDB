@@ -28,6 +28,7 @@ class AlunosController implements IAlunosController {
         const { nome, email, senha }: CriarAlunoDTO = req.body;
 
         const result = await this.alunosServices.create({ nome, email, senha });
+        // result retorna a senha que foi criada sem codificacao. Retirar o retorno da senha criada
 
         res.status(201).json({
             type: 'success',
@@ -42,7 +43,7 @@ class AlunosController implements IAlunosController {
         const { id: id_rota } = req.params;
         const { id: id_user }: ObterIdUsuarioDTO = req.user as ObterIdUsuarioDTO;
 
-        if (id_user !== Number(id_rota)) {
+        if (id_user !== id_rota) {
             res.status(403).json({
                 type: 'error',
                 mensagem: 'Não autorizado'
@@ -51,7 +52,7 @@ class AlunosController implements IAlunosController {
         }
         const aluno: AtualizarAlunoDTO = req.body;
 
-        const resultUpdate = await this.alunosServices.update(Number(id_user), aluno);
+        const resultUpdate = await this.alunosServices.update(id_user, aluno);
 
         res.status(200).json({
             type: 'success',

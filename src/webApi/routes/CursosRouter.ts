@@ -13,7 +13,7 @@ class CursosRouter {
 
         public routes(): Router {
                 const router = Router();
-                router.get('/', this.cursosController.show);
+                router.get('/', this.authentication.verifyIsAuth, this.cursosController.show);
                 router.use([
                         param('id').exists().isNumeric().withMessage('Id obrigatório'),
                         this.authentication.isAuth

@@ -24,7 +24,7 @@ class SessaoServices implements ISessaoServices {
                 throw new Error("E-mail e/ou senha inválidos");
             }
 
-            const dadosLogin = await this.sessaoRepository.findById(usuario.id);
+            const dadosLogin = await this.sessaoRepository.findByUserId(usuario.id);
 
             if (!dadosLogin) {
                 throw new Error("Dados de login não encontrados");
@@ -44,6 +44,7 @@ class SessaoServices implements ISessaoServices {
                 });
             }
 
+            // return token;
             return token;
         } catch (error: any) {
             throw new Error("Erro ao criar sessão: " + error.message);

@@ -20,7 +20,7 @@ class CursosRepository implements ICursosRepository {
   private async getDatabaseProps(): Promise<{ dbAcess: Db ,collection: Collection<CursosSchema>, client: MongoClient }> {
 
     const client = await this.databaseConnection.conectar();
-    const dbAcess = client.db(process.env.DATABASE_NAME);
+    const dbAcess = client.db(process.env.DB_NAME);
     const collection = dbAcess.collection<CursosSchema>(this.COLLECTION_NAME);
 
     return { dbAcess, collection, client };
@@ -58,7 +58,7 @@ class CursosRepository implements ICursosRepository {
     }
   }
 
-  findAllWithoutRegistration = async (id_user: number): Promise<CursosSchema[]> => {
+  findAllWithoutRegistration = async (id_user: string): Promise<CursosSchema[]> => {
 
     const { dbAcess ,collection, client } = await this.getDatabaseProps();
 
@@ -86,7 +86,7 @@ class CursosRepository implements ICursosRepository {
     }
   }
 
-  findAllRegistration = async (id_user: number): Promise<ObterCursosInscricoesCancelamentosDTO[]> => {
+  findAllRegistration = async (id_user: string): Promise<ObterCursosInscricoesCancelamentosDTO[]> => {
     const { collection, client } = await this.getDatabaseProps();
 
     try {
@@ -98,7 +98,7 @@ class CursosRepository implements ICursosRepository {
             let: { cursoId: "$id" },
             pipeline: [
               { $match: { $expr: { $and: [{ $eq: ["$id_curso", "$$cursoId"] }, { $eq: ["$id_aluno", id_user] }] } } },
-              { $group: { id: "$id_curso", data_inscricao: { $min: "$data_inscricao" } } }
+              { $group: { _id: "$id_curso", data_inscricao: { $min: "$data_inscricao" } } }
             ],
             as: 'inscricao'
           }
@@ -110,7 +110,7 @@ class CursosRepository implements ICursosRepository {
             let: { cursoId: "$id" },
             pipeline: [
               { $match: { $expr: { $and: [{ $eq: ["$id_curso", "$$cursoId"] }, { $eq: ["$id_aluno", id_user] }] } } },
-              { $group: { id: "$id_curso", data_cancelamento: { $min: "$data_cancelamento" } } }
+              { $group: { _id: "$id_curso", data_cancelamento: { $min: "$data_cancelamento" } } }
             ],
             as: 'cancelamento'
           }
@@ -149,7 +149,7 @@ class CursosRepository implements ICursosRepository {
     }
   }
 
-  cursoByIdExists = async (id_curso: number): Promise<boolean> => {
+  cursoByIdExists = async (id_curso: string): Promise<boolean> => {
     const { collection, client } = await this.getDatabaseProps();
 
     try {
@@ -165,19 +165,23 @@ class CursosRepository implements ICursosRepository {
     }
   }
 
-  handleMatriculas = async (id_user: number, id_curso: number, req: Request): Promise<number> => {
+  handleMatriculas = async (id_user: string, id_curso: string, req: Request): Promise<number> => {
 
     const { dbAcess, client } = await this.getDatabaseProps();
 
     let result = null;
 
+    /*
+      TODO: TRATAR CASO DE USUARIO JA MATRICULADO TENTAR MATRICULAR NOVAMENTE
+    */
+
     try {
       if (await this.usuarioMatriculado(id_user, id_curso) && await this.usuarioJaCancelou(id_user, id_curso) === false && req.method === 'DELETE') {
-        await client.db(process.env.DATABASE_NAME).collection<CancelamentosSchema>("cancelamentos")
+        await dbAcess.collection<CancelamentosSchema>("cancelamentos")
           .insertOne({
             id_aluno: id_user, id_curso: id_curso, data_cancelamento: new Date(),
             _id: new ObjectId(),
-            id: Number(new ObjectId()) // TODO: MODIFICAR O USO DE ID NUMBER. USAR SOMENTE _ID DO MONGO
+            id: new ObjectId().toString() // TODO: MODIFICAR O USO DE ID NUMBER. USAR SOMENTE _ID DO MONGO
           });
         result = 0;
       } else {
@@ -186,7 +190,7 @@ class CursosRepository implements ICursosRepository {
             .insertOne({
               id_aluno: id_user, id_curso: id_curso, data_inscricao: new Date(),
               _id: new ObjectId(),
-              id: Number(new ObjectId()) // TODO: MODIFICAR O USO DE ID NUMBER. USAR SOMENTE _ID DO MONGO
+              id: new ObjectId().toString() // TODO: MODIFICAR O USO DE ID NUMBER. USAR SOMENTE _ID DO MONGO
             });
           result = 1;
         } else {
@@ -203,7 +207,7 @@ class CursosRepository implements ICursosRepository {
     }
   }
 
-  private usuarioMatriculado = async (id_user: number, id_curso: number): Promise<boolean> => {
+  private usuarioMatriculado = async (id_user: string, id_curso: string): Promise<boolean> => {
     const { dbAcess, client } = await this.getDatabaseProps();
 
     try {
@@ -219,7 +223,7 @@ class CursosRepository implements ICursosRepository {
     }
   }
 
-  private usuarioJaCancelou = async (id_user: number, id_curso: number): Promise<boolean> => {
+  private usuarioJaCancelou = async (id_user: string, id_curso: string): Promise<boolean> => {
     const { dbAcess, client } = await this.getDatabaseProps();
 
     try {

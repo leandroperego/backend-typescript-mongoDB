@@ -2,8 +2,8 @@ import { ObjectId } from "mongodb";
 
 type AutenticaoSchema = {
     _id: ObjectId;
-    id: number;
-    id_usuario: number;
+    id: string;
+    id_usuario: string;
     email: string;
     senha: string;
 }

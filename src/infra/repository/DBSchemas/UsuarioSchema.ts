@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 type UsuarioSchema = {
     _id: ObjectId;
-    id: number;
+    id: string;
     nome: string;
     email: string;
     // nascimento: Date;

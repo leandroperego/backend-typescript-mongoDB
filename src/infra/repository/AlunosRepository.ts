@@ -20,7 +20,7 @@ class AlunosRepository implements IAlunosRepository {
   private async getDBProps(): Promise<{ dbAcess: Db, collection: Collection<Usuario>, client: MongoClient }> {
 
     const client = await this.databaseConnection.conectar();
-    const dbAcess = client.db(process.env.DATABASE_NAME);
+    const dbAcess = client.db(process.env.DB_NAME);
     const collection = dbAcess.collection<Usuario>(this.COLLECTION_NAME);
     return { dbAcess, collection, client };
   }
@@ -43,7 +43,7 @@ class AlunosRepository implements IAlunosRepository {
 
   }
 
-  findById = async (id: number): Promise<ObterDadosUsuarioDTO | null> => {
+  findById = async (id: string): Promise<ObterDadosUsuarioDTO | null> => {
 
     const { client, collection } = await this.getDBProps();
 
@@ -75,7 +75,7 @@ class AlunosRepository implements IAlunosRepository {
 
       const result = await collection.insertOne(
         { 
-          id: Number(new ObjectId()),
+          id: new ObjectId().toString(),
           nome: aluno.nome, 
           email: aluno.email,
           senha: senhaHash
@@ -83,11 +83,14 @@ class AlunosRepository implements IAlunosRepository {
 
       if (!result) return null;
 
+      // ATÉ REALIZAR A ELIMINACAO DO ID E UTILIZAR APENAS O _ID DO MONGO, A CONSULTA ABAIXO SE FAZ NECESSARIA:
+      const userCreated = await collection.findOne({ _id: result.insertedId });
+
       await collectionAutenticacao.insertOne(
         { 
           _id: result.insertedId,
-          id: Number(new ObjectId()),
-          id_usuario: Number(result.insertedId),
+          id_usuario: userCreated!.id,
+          id: new ObjectId().toString(),
           email: aluno.email, 
           senha: senhaHash
         });
@@ -106,7 +109,7 @@ class AlunosRepository implements IAlunosRepository {
 
   }
 
-  update = async (id: number, aluno: AtualizarAlunoDTO): Promise<Usuario | null> => {
+  update = async (id: string, aluno: AtualizarAlunoDTO): Promise<Usuario | null> => {
 
     const { dbAcess, client, collection } = await this.getDBProps();
     const collectionAutenticacao = dbAcess.collection<AutenticaoSchema>('autenticacao');
@@ -116,20 +119,13 @@ class AlunosRepository implements IAlunosRepository {
 
       session.startTransaction();
 
-      const resultUpdate = await collection.updateOne({ id: id },
-        {
-          $set: {
-            nome: aluno.nome,
-            email: aluno.email
-          }
-        }
-      )
+      const resultUpdate = await collection.findOneAndUpdate({ id: id }, { $set: { ...aluno } });
 
-      if (!resultUpdate.upsertedId) return null;
+      if (!resultUpdate) return null;
 
       const resultAfterUpdate = await collection.findOne({ id: id }, { projection: { senha: 0 } });
 
-      await collectionAutenticacao.updateOne({ id_usuario: id },
+      await collectionAutenticacao.findOneAndUpdate({ id_usuario: id },
         {
           $set: {
             email: aluno.email

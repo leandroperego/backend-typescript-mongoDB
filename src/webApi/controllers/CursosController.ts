@@ -14,7 +14,6 @@ class CursosController implements ICursosController {
     ) { }
 
     show = async (req: CustomRequest, res: Response): Promise<void> => {
-
         const cursos: ObterCursosDTO[] = await this.cursosServices.findAll(req.user);
 
         res.status(200).json(cursos);
@@ -24,7 +23,7 @@ class CursosController implements ICursosController {
         const { id: id_user } = req.user as ObterIdUsuarioDTO;
         const { id } = req.params;
 
-        const id_curso = Number(id);
+        const id_curso = id;
 
 
         const result: number = await this.cursosServices.handleMatriculas(id_user, id_curso, req) as number;

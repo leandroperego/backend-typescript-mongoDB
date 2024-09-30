@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 type CursosSchema = {
     _id: ObjectId;
-    id: number;
+    id: string;
     nome: string;
     descricao: string;
     capa: string;

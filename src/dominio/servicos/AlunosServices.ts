@@ -25,14 +25,14 @@ class AlunosServices implements IAlunosServices {
         return result;
     }
 
-     update = async(id: number, aluno: AtualizarAlunoDTO): Promise<Usuario | null> => {
-        const result = await this.findById(Number(id));
+     update = async(id: string, aluno: AtualizarAlunoDTO): Promise<Usuario | null> => {
+        const result = await this.findById(id);
 
         if (!result) {
             throw new Error("Aluno não encontrado.");
         }
 
-        const resultUpdate = await this.alunosRepository.update(Number(id), { ...result, ...aluno });
+        const resultUpdate = await this.alunosRepository.update(id, { ...result, ...aluno });
 
         if (!resultUpdate) {
             throw new Error("Erro ao atualizar Aluno.");
@@ -42,8 +42,8 @@ class AlunosServices implements IAlunosServices {
 
     }
 
-     findById = async(id: number): Promise<ObterDadosUsuarioDTO | null> => {
-        const result = await this.alunosRepository.findById(Number(id));
+     findById = async(id: string): Promise<ObterDadosUsuarioDTO | null> => {
+        const result = await this.alunosRepository.findById(id);
         if (!result) {
             return null;
         }

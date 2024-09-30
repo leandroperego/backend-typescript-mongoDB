@@ -1,14 +1,14 @@
 
 
 class Cursos {
-    id: number;
+    id: string;
     nome: string;
     descricao: string;
     capa: string;
     inscricoes: number;
     inicio: Date;
 
-    constructor(id: number, nome: string, descricao: string, capa: string, inscricoes: number, inicio: Date) {
+    constructor(id: string, nome: string, descricao: string, capa: string, inscricoes: number, inicio: Date) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;

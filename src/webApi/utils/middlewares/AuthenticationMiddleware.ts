@@ -85,6 +85,23 @@ class AuthenticationMiddleware implements IAuthentication {
         }
     }
 
+    verifyIsAuth(req: CustomRequest, res: Response, next: NextFunction): void {
+        const token: string = req.cookies['x-auth'];
+        const secret = process.env.SECRET;
+
+        if (token) {
+            try {
+              const decoded = jwt.verify(token, secret!);
+
+              req.user = decoded as ObterIdUsuarioDTO;
+            } catch (error) {
+              // Se o token for inválido, req.user fica undefined
+            }
+          }
+
+        next();
+    }
+
 }
 
 export default AuthenticationMiddleware;

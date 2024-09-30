@@ -3,8 +3,8 @@ import { AtualizarAlunoDTO, CriarAlunoDTO, ObterDadosUsuarioDTO } from "../../in
 
 interface IAlunosServices {
     create(aluno: CriarAlunoDTO): Promise<CriarAlunoDTO | null>;
-    update(id: number, aluno: AtualizarAlunoDTO): Promise<Usuario | null>;
-    findById(id: number): Promise<ObterDadosUsuarioDTO | null>;
+    update(id: string, aluno: AtualizarAlunoDTO): Promise<Usuario | null>;
+    findById(id: string): Promise<ObterDadosUsuarioDTO | null>;
     findByEmail(email: string): Promise<ObterDadosUsuarioDTO | null>
 }
 

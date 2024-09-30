@@ -2,9 +2,9 @@ import { ObjectId } from "mongodb";
 
 type CancelamentosSchema = {
     _id: ObjectId;
-    id: number;
-    id_aluno: number;
-    id_curso: number;
+    id: string;
+    id_aluno: string;
+    id_curso: string;
     data_cancelamento: Date;
 }
 

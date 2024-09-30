@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import IDatabase from '../../dominio/interfaces/IDatabase';
 import { injectable } from 'inversify';
-import { Collection, MongoClient, ServerApiVersion } from 'mongodb';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 
 @injectable()
 class Database implements IDatabase {
@@ -34,10 +34,10 @@ class Database implements IDatabase {
         console.log('Desconectado do banco de dados!');
     }
 
-    async getCollection(client: MongoClient, collection: string): Promise<Collection> {
+    // async getCollection(client: MongoClient, collection: string): Promise<Collection> {
 
-        return await client.db(process.env.DATABASE_NAME).collection(collection);
-    }
+    //     return await client.db(process.env.DATABASE_NAME).collection(collection);
+    // }
 
 }
 
